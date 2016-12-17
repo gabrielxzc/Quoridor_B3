@@ -33,15 +33,19 @@ SDL_Window *mainMenu()
 	return window;
 }
 
-SDL_Window *gameMenu()
+ /* 
+
+void gameMenu(SDL_Window *window)
 {
 	// Aici Cristinel
 }
 
-SDL_Window *instructionsMenu()
+void instructionsMenu(SDL_Window *window)
 {
 	// Aici Ionica
 }
+
+*/
 
 int main(int argc, char *argv[])
 {
@@ -59,20 +63,22 @@ int main(int argc, char *argv[])
 		{
 			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 				isRunning = false;
+			/*
 			if () // Buton start - Cristi
 			{
-				window = gameMenu();
+				gameMenu(window);
 				window = mainMenu();
 			}
 			if () // Buton instructiuni - Ioana
 			{
-				window = instructionsMenu();
+				instructionsMenu(window);
 				window = mainMenu();
 			}
 			if () // Buton exit - Codrin
 			{
 				isRunning = false;
 			}
+			*/
 		}
 	}
 

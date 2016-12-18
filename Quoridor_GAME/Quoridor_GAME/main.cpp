@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		{
 			if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 				isRunning = false;
-			/*
+		    /*
 			if () // Buton start - Cristi
 			{
 				gameMenu(window);
@@ -74,11 +74,16 @@ int main(int argc, char *argv[])
 				instructionsMenu(window);
 				window = mainMenu();
 			}
-			if () // Buton exit - Codrin
+			*/
+			if (event.type == SDL_MOUSEBUTTONDOWN && 
+				event.motion.x >=325 && 
+				event.motion.x <= 475 && 
+				event.motion.y >=350 && 
+				event.motion.y <= 400) // Buton exit - Codrin
 			{
+				
 				isRunning = false;
 			}
-			*/
 		}
 	}
 

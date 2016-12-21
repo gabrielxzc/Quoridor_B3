@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{013FCE78-AC15-4055-8D3A-C567509BC8A7}</ProjectGuid>
+    <ProjectGuid>{F720AC07-1A40-4FAB-9480-4A4A7704F5FB}</ProjectGuid>
     <RootNamespace>Quoridor_GAME</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\facultate\ip\Quoridor_GAME\SDL2-2.0.5\include;E:\facultate\ip\Quoridor_GAME\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\facultate\ip\Quoridor_GAME\SDL2-2.0.5\lib\x86;E:\facultate\ip\Quoridor_GAME\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\GIT\Quoridor_B3\Quoridor_GAME\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\GIT\Quoridor_B3\Quoridor_GAME\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -50,8 +50,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

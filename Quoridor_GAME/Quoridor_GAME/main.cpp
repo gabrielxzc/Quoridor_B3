@@ -1,248 +1,161 @@
-#include <SDL.h>
-#include <stdio.h>
 #include <iostream>
+#include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
+
 using namespace std;
-int mouseX, mouseY;
-SDL_Window* window = NULL;
-SDL_Texture * Texture;
-SDL_Renderer* renderer = NULL;
-SDL_Surface * exitButton, *player, *computer, *startGame, *information;
-SDL_Rect dstrect;
-bool isRunning = true;
-void createGameTable()
+
+SDL_Window *mainWindow = nullptr;
+SDL_Renderer *mainRenderer = nullptr;
+bool isRunning = true; // Inchide tot programul
+
+void addImageToRenderer(const char *file,int x, int y, int w, int h)
 {
-	SDL_RenderClear(renderer);
-	SDL_GetMouseState(&mouseX, &mouseY);
-
-	exitButton = IMG_Load("backbutton.PNG");
-	Texture = SDL_CreateTextureFromSurface(renderer, exitButton);
-	dstrect = { 20, 20, 60, 60 };
-	SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-
-	SDL_RenderPresent(renderer);
-
-}
-int playingAgainstHuman()
-{
-	SDL_Event event;
-	createGameTable();
-	while (isRunning)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			SDL_GetMouseState(&mouseX, &mouseY);
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 20 && mouseX<80 && mouseY>20 && mouseY < 80))
-				return 0;
-			if (event.type == SDL_QUIT)
-			{
-
-				isRunning = false;
-				return 0;
-			}
-		}
-	}
+	SDL_Surface *surface;
+	SDL_Texture *texture;
+	SDL_Rect imageSize = { x, y, w, h };
+	surface = IMG_Load(file);
+	texture = SDL_CreateTextureFromSurface(mainRenderer, surface);
+	SDL_RenderCopy(mainRenderer, texture, nullptr, &imageSize);
+	SDL_FreeSurface(surface);
+	SDL_DestroyTexture(texture);
 }
 
 int playingAgainstComputer()
 {
-	SDL_Event event;
-	createGameTable();
-	while (isRunning)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			SDL_GetMouseState(&mouseX, &mouseY);
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 20 && mouseX<80 && mouseY>20 && mouseY < 80))
-				return 0;
-			if (event.type == SDL_QUIT)
-			{
-
-				isRunning = false;
-				return 0;
-			}
-		}
-	}
+	return 0;
 }
 
-
-
-
-
-int createDecisionWindow()
+int playingAgainstHuman()
 {
+	return 0;
+}
 
+int runStartGameMenu()
+{
 	SDL_Event event;
+	SDL_SetRenderDrawColor(mainRenderer, 255, 0, 0, 255);
+
 	while (isRunning)
 	{
 		while (SDL_PollEvent(&event))
 		{
-			SDL_RenderClear(renderer);
-			SDL_GetMouseState(&mouseX, &mouseY);
-			if (mouseX > 150 && mouseX<450 && mouseY>100 && mouseY < 700)
-			{
+			SDL_RenderClear(mainRenderer);
 
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
+			addImageToRenderer("images/backButton.PNG", 20, 20, 60, 60);
 
-				computer = IMG_Load("computercolor.PNG");
-				Texture = SDL_CreateTextureFromSurface(renderer, computer);
-				dstrect = { 150, 100, 300, 600 };
-				SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-
-			}
+			if (event.motion.x > 150 && event.motion.x<450 && event.motion.y>100 && event.motion.y < 700)
+				addImageToRenderer("images/computercolor.png", 150, 100, 300, 600);
 			else
-			{
-				computer = IMG_Load("computernoncolor.PNG");
-				Texture = SDL_CreateTextureFromSurface(renderer, computer);
-				dstrect = { 150, 100, 300, 600 };
-				SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-			}
-			if (mouseX > 600 && mouseX<900 && mouseY>100 && mouseY < 700)
-			{
-				player = IMG_Load("versuscolor.PNG");
-				Texture = SDL_CreateTextureFromSurface(renderer, player);
-				dstrect = { 600, 100, 300, 600 };
-				SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-			}
+				addImageToRenderer("images/computernoncolor.PNG", 150, 100, 300, 600);
+			if (event.motion.x > 600 && event.motion.x<900 && event.motion.y>100 && event.motion.y < 700)
+				addImageToRenderer("images/versuscolor.PNG", 600, 100, 300, 600);
 			else
-			{
-				player = IMG_Load("versusnoncolor.PNG");
-				Texture = SDL_CreateTextureFromSurface(renderer, player);
-				dstrect = { 600, 100, 300, 600 };
-				SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-			}
+				addImageToRenderer("images/versusnoncolor.PNG", 600, 100, 300, 600);
 
-			SDL_Surface * exitButton = IMG_Load("backbutton.PNG");
-			Texture = SDL_CreateTextureFromSurface(renderer, exitButton);
-			dstrect = { 20, 20, 60, 60 };
-			SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-
-			if (event.type == SDL_MOUSEBUTTONDOWN && mouseX > 150 && mouseX<450 && mouseY>100 && mouseY < 700) {
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 150 && event.motion.x<450 && event.motion.y>100 && event.motion.y < 700) {
 				playingAgainstComputer();
 				return 0;
 			}
-			if (event.type == SDL_MOUSEBUTTONDOWN &&  mouseX > 600 && mouseX<900 && mouseY>100 && mouseY < 700) {
+			if (event.type == SDL_MOUSEBUTTONDOWN &&  event.motion.x > 600 && event.motion.x<900 && event.motion.y>100 && event.motion.y < 700) {
 				playingAgainstHuman();
 				return 0;
 			}
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 20 && mouseX<80 && mouseY>20 && mouseY < 80))
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 20 && event.motion.x<80 && event.motion.y>20 && event.motion.y < 80))
 				return 0;
+
 			if (event.type == SDL_QUIT)
 			{
-
 				isRunning = false;
 				return 0;
 			}
 
-			SDL_RenderPresent(renderer);
-
-
+			SDL_RenderPresent(mainRenderer);
 		}
 	}
-
-
-
-
+	return 0;
 }
-int createRulesWindow()
+
+int runInstructionsMenu()
 {
 	SDL_Event event;
+	SDL_SetRenderDrawColor(mainRenderer, 255, 0, 0, 255);
+
 	while (isRunning)
 	{
 		while (SDL_PollEvent(&event))
 		{
-			SDL_RenderClear(renderer);
-			SDL_GetMouseState(&mouseX, &mouseY);
+			SDL_RenderClear(mainRenderer);
 
-			SDL_Surface * exitButton = IMG_Load("backbutton.PNG");
-			Texture = SDL_CreateTextureFromSurface(renderer, exitButton);
-			dstrect = { 20, 20, 60, 60 };
-			SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
+			addImageToRenderer("images/backButton.PNG", 20, 20, 60, 60);
 
-
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 20 && mouseX<80 && mouseY>20 && mouseY < 80))
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 20 && event.motion.x<80 && event.motion.y>20 && event.motion.y < 80))
 				return 0;
 			if (event.type == SDL_QUIT)
 			{
-
 				isRunning = false;
 				return 0;
 			}
-
-			SDL_RenderPresent(renderer);
-
-
+			SDL_RenderPresent(mainRenderer);
 		}
-
 	}
+
+	return 0;
 }
 
-
-
-void createMainMenu()
+int runMainMenu()
 {
-
 	SDL_Event event;
+	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
 	while (isRunning)
 	{
 		while (SDL_PollEvent(&event))
 		{
-			SDL_RenderClear(renderer);
-			SDL_GetMouseState(&mouseX, &mouseY);
+			SDL_RenderClear(mainRenderer);
 
-			startGame = IMG_Load("startGame.PNG");
-			Texture = SDL_CreateTextureFromSurface(renderer, startGame);
-			dstrect = { 100, 300, 800, 100 };
-			SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
+			addImageToRenderer("images/startGame.PNG", 100, 300, 800, 100);
+			addImageToRenderer("images/rules.PNG", 100, 450, 800, 100);
+			addImageToRenderer("images/exitButton.PNG", 100, 600, 800, 100);
 
-
-			information = IMG_Load("rules.PNG");
-			Texture = SDL_CreateTextureFromSurface(renderer, information);
-			dstrect = { 100, 450, 800, 100 };
-			SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-
-
-			SDL_Surface * exitButton = IMG_Load("exitButton.PNG");
-			Texture = SDL_CreateTextureFromSurface(renderer, exitButton);
-			dstrect = { 100, 600, 800, 100 };
-			SDL_RenderCopy(renderer, Texture, NULL, &dstrect);
-
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 100 && mouseX<900 && mouseY>300 && mouseY<400)) 	createDecisionWindow();
-			if (event.type == SDL_MOUSEBUTTONDOWN && (mouseX > 100 && mouseX<900 && mouseY>450 && mouseY<550))  createRulesWindow();
-			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN && (mouseX>100 && mouseX<900 && mouseY>600 && mouseY<700))
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 100 && event.motion.x < 900 && event.motion.y > 300 && event.motion.y < 400))
+				runStartGameMenu();
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 100 && event.motion.x<900 && event.motion.y>450 && event.motion.y<550))
+				runInstructionsMenu();
+			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x>100 && event.motion.x<900 && event.motion.y>600 && event.motion.y < 700))
 				isRunning = false;
-			SDL_RenderPresent(renderer);
 
-
+			SDL_RenderPresent(mainRenderer);
 		}
 	}
 
-
-
-
-
-
-
+	return 0;
 }
-int main(int argc, char** argv)
-{
 
-	IMG_Init(IMG_INIT_PNG);
-	window = SDL_CreateWindow
-		(
-		"Quoridor", SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
+int main(int argc, char* argv[])
+{
+	SDL_Init(SDL_INIT_EVERYTHING);
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+	TTF_Init();
+
+	mainWindow = SDL_CreateWindow("Quoridor",
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
 		1024,
 		768,
-		SDL_WINDOW_SHOWN
-		);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 128, 128, 128, 128);
-	createMainMenu();
+		0);
 
-	SDL_Event event;
+	mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+	runMainMenu();
+
+	SDL_DestroyWindow(mainWindow);
+	TTF_Quit();
 	IMG_Quit();
+	SDL_Quit();
 	return 0;
 }

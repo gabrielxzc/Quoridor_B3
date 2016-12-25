@@ -34,6 +34,11 @@ void addImageToRenderer(const char *file,int x, int y, int w, int h)
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
 }
+int checkFuturePosition(int xFuture, int yFuture, int xOtherPlayer, int yOtherPlayer)
+{
+	if (xFuture == xOtherPlayer && yFuture == yOtherPlayer) return 0;
+	return 1;
+}
 
 void createPlayTable()
 {
@@ -49,13 +54,30 @@ void createPlayTable()
 	SDL_RenderPresent(mainRenderer);
 }
 
-void highlightPossibleMoves(int X, int Y)
+void highlightPossibleMoves(int X, int Y, int playerHighlighter)
 {
-	if (X - moveLeftRight >= p1XS - (4*moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
-	if (X + moveLeftRight <= p1XS + (4*moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
-	if (Y + moveUpDown <= p1YS ) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
-	if (Y - moveUpDown >= p2YS ) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
-
+	if (playerHighlighter == 1)
+	{
+		if (checkFuturePosition(X-moveLeftRight,Y,p2X,p2Y)==0 && X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+		else if (X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+		else  if (X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X , Y+moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+		else if (Y + moveUpDown <= p1YS &&checkFuturePosition(X, Y + moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+		if (checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+		else	if (Y - moveUpDown >= p2YS && checkFuturePosition(X, Y - moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+	}
+	if (playerHighlighter == 2)
+	{
+		if (checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+		else if (X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+		else  if (X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X , Y+moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+		else if (Y + moveUpDown <= p1YS && checkFuturePosition(X, Y + moveUpDown, p1X, p1Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+		if (checkFuturePosition(X , Y-moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+		else	if (Y - moveUpDown >= p2YS&& checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+	}
 	SDL_RenderPresent(mainRenderer);
 }
 
@@ -96,7 +118,7 @@ int playerOnePlay()
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p1X && event.motion.x <= p1X + 35 && event.motion.y >= p1Y && event.motion.y <= p1Y + 35)
 			if (highlighted==0)	
 			{
-				highlightPossibleMoves(p1X, p1Y);
+				highlightPossibleMoves(p1X, p1Y,1);
 				highlighted = 1;
 			}
 			else{
@@ -105,26 +127,68 @@ int playerOnePlay()
 			if (highlighted == 1)
 			{
 
-				if (p1X - moveLeftRight >= p1XS - (4 * moveLeftRight))
+				if (checkFuturePosition(p1X - moveLeftRight,p1Y, p2X, p2Y)==0 && p2X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight))
+				{
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+						p1X = p1X - 2 * moveLeftRight, turnOver = true;
+				}
+				else
+				if (p1X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - moveLeftRight && event.motion.x < p1X - moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+				{
 					p1X = p1X - moveLeftRight, turnOver = true;
+				}
 
-				if (p1X + moveLeftRight <= p1XS + (4 * moveLeftRight))
+
+
+				if ( checkFuturePosition (p1X + moveLeftRight,p1Y,p2X, p2Y)==0 && p1X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight))
+				{
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + 2 * moveLeftRight && event.motion.x < p1X + 2 * moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+				
+					p1X = p1X + 2 * moveLeftRight, turnOver = true;
+				}
+				else
+				if (p1X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(p1X + moveLeftRight, p1Y, p2X, p2Y) ==1 )
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
 					p1X = p1X + moveLeftRight, turnOver = true;
 
+
+
 				if (p1Y + moveUpDown <= p1YS)
+				if (checkFuturePosition(p1X ,p1Y + moveUpDown , p2X , p2Y)==0)
+				{
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y + 2 * moveUpDown && event.motion.y < p1Y + 2 * moveUpDown + squareL)
+					{
+						p1Y = p1Y + 2*moveUpDown, turnOver = true;
+					}
+				}
+				else
+				if (checkFuturePosition(p1X, p1Y + moveUpDown, p2X, p2Y)==1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y + moveUpDown && event.motion.y < p1Y + moveUpDown + squareL)
+				{
 					p1Y = p1Y + moveUpDown, turnOver = true;
+				}
+
+
 
 				if (p1Y - moveUpDown >= p2YS)
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareL)
+				if (checkFuturePosition (p1X,p1Y - moveUpDown, p2X, p2Y)==0)
+				{
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y - 2 * moveUpDown && event.motion.y < p1Y - 2 * moveUpDown + squareL)
+						p1Y = p1Y - 2 * moveUpDown, turnOver = true;
+				}
+				else
+				if (checkFuturePosition(p1X, p1Y - moveUpDown, p2X, p2Y)== 1)
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareL )
 					p1Y = p1Y - moveUpDown, turnOver = true;
+			}
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
+				return 0;
 				}
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 					return 0;
 			
-		}
+		
 	}
 
 	playerOneTurn = false;
@@ -144,7 +208,7 @@ int playerTwoPlay()
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p2X && event.motion.x <= p2X + 35 && event.motion.y >= p2Y && event.motion.y <= p2Y + 35)
 				if (highlighted == 0)
 				{
-					highlightPossibleMoves(p2X, p2Y);
+					highlightPossibleMoves(p2X, p2Y,2);
 					highlighted = 1;
 				}
 				else{
@@ -152,19 +216,55 @@ int playerTwoPlay()
 				}
 				if (highlighted == 1)
 				{
-					if (p2X - moveLeftRight >= p1XS - (4 * moveLeftRight))
+					if (checkFuturePosition(p2X - moveLeftRight,p2Y,p1X,p1Y)==0 && p2X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight))
+					{
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+							p2X = p2X - 2 * moveLeftRight, turnOver = true;
+					}
+					else
+					if (p2X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - moveLeftRight && event.motion.x < p2X - moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+					{
 						p2X = p2X - moveLeftRight, turnOver = true;
+					}
 
-					if (p2X + moveLeftRight <= p1XS + (4 * moveLeftRight))
+
+
+					if (checkFuturePosition(p2X + moveLeftRight, p2Y, p1X, p1Y)==0 && p2X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight))
+					{if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + 2 * moveLeftRight && event.motion.x < p2X + 2 * moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+					
+						p2X = p2X + 2 * moveLeftRight, turnOver = true;
+					}
+					else
+					if (p2X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
 						p2X = p2X + moveLeftRight, turnOver = true;
 
-					if (p2Y + moveUpDown <= p1YS)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareL)
-						p2Y = p2Y + moveUpDown, turnOver = true;
 
+
+					if (p2Y + moveUpDown <= p1YS)
+					if (checkFuturePosition(p2X , p2Y+moveUpDown, p1X, p1Y)==0)
+					{
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y + 2*moveUpDown && event.motion.y < p2Y + 2*moveUpDown + squareL)
+						{
+							p2Y = p2Y + 2*moveUpDown, turnOver = true;
+						}
+					}
+					else 
+					if (checkFuturePosition(p2X, p2Y + moveUpDown, p1X, p1Y)==1)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareL)
+					{p2Y = p2Y + moveUpDown, turnOver = true;}
+
+					
+					
 					if (p2Y - moveUpDown >= p2YS)
+					if (checkFuturePosition(p2X, p2Y - moveUpDown, p1X, p1Y) == 0)
+					{
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y -2* moveUpDown && event.motion.y < p2Y - 2*moveUpDown + squareL)
+							p2Y = p2Y - 2*moveUpDown, turnOver = true;
+					}
+					else
+					if (checkFuturePosition(p2X, p2Y - moveUpDown, p1X, p1Y) == 1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareL)
 						p2Y = p2Y - moveUpDown, turnOver = true;
 				}
@@ -172,6 +272,11 @@ int playerTwoPlay()
 						return 0;
 				
 			}
+
+
+
+
+
 		}
 	playerOneTurn = true;
 }
@@ -195,7 +300,8 @@ int playingAgainstHuman()
 			if (menuCall == 0) return 0;
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
-
+			if (p1Y == p2YS) return 0;
+			if (p2Y == p1YS) return 0;
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;

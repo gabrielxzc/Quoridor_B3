@@ -21,13 +21,53 @@ void addImageToRenderer(const char *file,int x, int y, int w, int h)
 	SDL_DestroyTexture(texture);
 }
 
+void createPlayTable()
+{
+	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
+	SDL_RenderClear(mainRenderer);
+
+	SDL_RenderPresent(mainRenderer);
+
+}
+
 int playingAgainstComputer()
 {
+	SDL_Event event;
+
+	createPlayTable();
+
+	while (isRunning)
+	{
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				isRunning = false;
+				return 0;
+			}
+		}
+	}
 	return 0;
 }
 
 int playingAgainstHuman()
 {
+	SDL_Event event;
+
+	createPlayTable();
+
+	while (isRunning)
+	{
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				isRunning = false;
+				return 0;
+			}
+		}
+	}
 	return 0;
 }
 
@@ -42,28 +82,29 @@ int runStartGameMenu()
 		{
 			SDL_RenderClear(mainRenderer);
 
-			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
-			addImageToRenderer("images/backButton.PNG", 20, 20, 60, 60);
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 800, 600);
+			addImageToRenderer("images/backButton.PNG", 365, 550, 70, 40);
 
-			if (event.motion.x > 150 && event.motion.x<450 && event.motion.y>100 && event.motion.y < 700)
-				addImageToRenderer("images/computercolor.png", 150, 100, 300, 600);
+			if (event.motion.x > 95 && event.motion.x < 395 && event.motion.y > 125 && event.motion.y < 525)
+				addImageToRenderer("images/computerColor.png", 95, 125, 300, 400);
 			else
-				addImageToRenderer("images/computernoncolor.PNG", 150, 100, 300, 600);
-			if (event.motion.x > 600 && event.motion.x<900 && event.motion.y>100 && event.motion.y < 700)
-				addImageToRenderer("images/versuscolor.PNG", 600, 100, 300, 600);
-			else
-				addImageToRenderer("images/versusnoncolor.PNG", 600, 100, 300, 600);
+				addImageToRenderer("images/computerNonColor.PNG", 95, 125, 300, 400);
 
-			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 150 && event.motion.x<450 && event.motion.y>100 && event.motion.y < 700) {
+			if (event.motion.x > 405 && event.motion.x < 705 && event.motion.y > 125 && event.motion.y < 525)
+				addImageToRenderer("images/vsPlayerColor.PNG", 405, 125, 300, 400);
+			else
+				addImageToRenderer("images/vsPlayerNonColor.PNG", 405, 125, 300, 400);
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 95 && event.motion.x < 395 && event.motion.y > 125 && event.motion.y < 525) {
 				playingAgainstComputer();
 				return 0;
 			}
-			if (event.type == SDL_MOUSEBUTTONDOWN &&  event.motion.x > 600 && event.motion.x<900 && event.motion.y>100 && event.motion.y < 700) {
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 405 && event.motion.x < 705 && event.motion.y > 125 && event.motion.y < 525) {
 				playingAgainstHuman();
 				return 0;
 			}
 
-			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 20 && event.motion.x<80 && event.motion.y>20 && event.motion.y < 80))
+			if ((event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590)) || event.key.keysym.sym == SDLK_ESCAPE)
 				return 0;
 
 			if (event.type == SDL_QUIT)
@@ -89,10 +130,10 @@ int runInstructionsMenu()
 		{
 			SDL_RenderClear(mainRenderer);
 
-			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
-			addImageToRenderer("images/backButton.PNG", 20, 20, 60, 60);
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 800, 600);
+			addImageToRenderer("images/backButton.PNG", 365, 550, 70, 40);
 
-			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 20 && event.motion.x<80 && event.motion.y>20 && event.motion.y < 80))
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
 				return 0;
 			if (event.type == SDL_QUIT)
 			{
@@ -117,16 +158,28 @@ int runMainMenu()
 		{
 			SDL_RenderClear(mainRenderer);
 
-			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 1024, 768);
-			addImageToRenderer("images/startGame.PNG", 100, 300, 800, 100);
-			addImageToRenderer("images/rules.PNG", 100, 450, 800, 100);
-			addImageToRenderer("images/exitButton.PNG", 100, 600, 800, 100);
+			addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 800, 600);
 
-			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 100 && event.motion.x < 900 && event.motion.y > 300 && event.motion.y < 400))
+			if (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 175 && event.motion.y < 275)
+				addImageToRenderer("images/startGameHIGHLIGHT.PNG", 225, 175, 350, 100);
+			else
+				addImageToRenderer("images/startGame.PNG", 225, 175, 350, 100);
+
+			if (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 300 && event.motion.y < 400)
+				addImageToRenderer("images/rulesHIGHLIGHT.PNG", 225, 300, 350, 100);
+			else
+				addImageToRenderer("images/rules.PNG", 225, 300, 350, 100);
+
+			if (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 425 && event.motion.y < 525)
+				addImageToRenderer("images/exitButtonHIGHLIGHT.PNG", 225, 425, 350, 100);
+			else
+				addImageToRenderer("images/exitButton.PNG", 225, 425, 350, 100);
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 175 && event.motion.y < 275))
 				runStartGameMenu();
-			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 100 && event.motion.x<900 && event.motion.y>450 && event.motion.y<550))
+			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 300 && event.motion.y < 400))
 				runInstructionsMenu();
-			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x>100 && event.motion.x<900 && event.motion.y>600 && event.motion.y < 700))
+			if (event.type == SDL_QUIT || event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 425 && event.motion.y < 525))
 				isRunning = false;
 
 			SDL_RenderPresent(mainRenderer);
@@ -145,8 +198,8 @@ int main(int argc, char* argv[])
 	mainWindow = SDL_CreateWindow("Quoridor",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		1024,
-		768,
+		800,
+		600,
 		0);
 
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);

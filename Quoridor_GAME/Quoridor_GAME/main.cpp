@@ -2,13 +2,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#define p1XS 382
-#define p1YS 504
-#define p2XS 382
-#define p2YS 56
-#define moveUpDown 56
-#define moveLeftRight 59
-#define squareL 35
+
+#include "defines.h"
 
 using namespace std;
 
@@ -59,25 +54,25 @@ void highlightPossibleMoves(int X, int Y, int playerHighlighter)
 {
 	if (playerHighlighter == 1)
 	{
-		if (checkFuturePosition(X-moveLeftRight,Y,p2X,p2Y)==0 && X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
-		else if (X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
-		if (checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
-		else  if (X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
-		if (checkFuturePosition(X , Y+moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
-		else if (Y + moveUpDown <= p1YS &&checkFuturePosition(X, Y + moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
-		if (checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
-		else	if (Y - moveUpDown >= p2YS && checkFuturePosition(X, Y - moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+		if (checkFuturePosition(X-moveLeftRight,Y,p2X,p2Y)==0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+		else if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+		else  if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X , Y+moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+		else if (Y + moveUpDown <= p1Y_Start &&checkFuturePosition(X, Y + moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+		if (checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+		else	if (Y - moveUpDown >= p2Y_Start && checkFuturePosition(X, Y - moveUpDown, p2X, p2Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
 	}
 	if (playerHighlighter == 2)
 	{
-		if (checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
-		else if (X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
-		if (checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
-		else  if (X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
-		if (checkFuturePosition(X , Y+moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
-		else if (Y + moveUpDown <= p1YS && checkFuturePosition(X, Y + moveUpDown, p1X, p1Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
-		if (checkFuturePosition(X , Y-moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2YS) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
-		else	if (Y - moveUpDown >= p2YS&& checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+		if (checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+		else if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkFuturePosition(X - moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+		else  if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkFuturePosition(X + moveLeftRight, Y, p1X, p1Y)==1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+		if (checkFuturePosition(X , Y+moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+		else if (Y + moveUpDown <= p1Y_Start && checkFuturePosition(X, Y + moveUpDown, p1X, p1Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+		if (checkFuturePosition(X , Y-moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+		else	if (Y - moveUpDown >= p2Y_Start&& checkFuturePosition(X, Y - moveUpDown, p2X, p2Y) == 1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
 	}
 	SDL_RenderPresent(mainRenderer);
 }
@@ -162,66 +157,70 @@ int playerOnePlay()
 			if (highlighted == 1)
 			{
 
-				if (checkFuturePosition(p1X - moveLeftRight,p1Y, p2X, p2Y)==0 && p2X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight))
+				if (checkFuturePosition(p1X - moveLeftRight,p1Y, p2X, p2Y)==0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 						p1X = p1X - 2 * moveLeftRight, turnOver = true;
 				}
 				else
-				if (p1X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1)
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - moveLeftRight && event.motion.x < p1X - moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+				if (p1X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkFuturePosition(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1)
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - moveLeftRight && event.motion.x < p1X - moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 				{
 					p1X = p1X - moveLeftRight, turnOver = true;
 				}
 
 
 
-				if ( checkFuturePosition (p1X + moveLeftRight,p1Y,p2X, p2Y)==0 && p1X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight))
+				if ( checkFuturePosition (p1X + moveLeftRight,p1Y,p2X, p2Y)==0 && p1X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + 2 * moveLeftRight && event.motion.x < p1X + 2 * moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + 2 * moveLeftRight && event.motion.x < p1X + 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 				
 					p1X = p1X + 2 * moveLeftRight, turnOver = true;
 				}
 				else
-				if (p1X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(p1X + moveLeftRight, p1Y, p2X, p2Y) ==1 )
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareL && event.motion.y > p1Y && event.motion.y < p1Y + squareL)
+				if (p1X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkFuturePosition(p1X + moveLeftRight, p1Y, p2X, p2Y) ==1 )
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 					p1X = p1X + moveLeftRight, turnOver = true;
 
 
 
-				if (p1Y + moveUpDown <= p1YS)
-				if (checkFuturePosition(p1X ,p1Y + moveUpDown , p2X , p2Y)==0)
+				if (p1Y + moveUpDown <= p1Y_Start)
+				if (checkFuturePosition(p1X, p1Y + moveUpDown, p2X, p2Y) == 0 && p1Y + 2*moveUpDown <= p1Y_Start)
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y + 2 * moveUpDown && event.motion.y < p1Y + 2 * moveUpDown + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y + 2 * moveUpDown && event.motion.y < p1Y + 2 * moveUpDown + squareSideLength)
 					{
 						p1Y = p1Y + 2*moveUpDown, turnOver = true;
 					}
 				}
 				else
 				if (checkFuturePosition(p1X, p1Y + moveUpDown, p2X, p2Y)==1)
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y + moveUpDown && event.motion.y < p1Y + moveUpDown + squareL)
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y + moveUpDown && event.motion.y < p1Y + moveUpDown + squareSideLength)
 				{
 					p1Y = p1Y + moveUpDown, turnOver = true;
 				}
 
 
 
-				if (p1Y - moveUpDown >= p2YS)
-				if (checkFuturePosition (p1X,p1Y - moveUpDown, p2X, p2Y)==0)
+				if (p1Y - moveUpDown >= p2Y_Start)
+				if (checkFuturePosition(p1X, p1Y - moveUpDown, p2X, p2Y) == 0 && p1Y - 2*moveUpDown >= p2Y_Start)
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y - 2 * moveUpDown && event.motion.y < p1Y - 2 * moveUpDown + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - 2 * moveUpDown && event.motion.y < p1Y - 2 * moveUpDown + squareSideLength)
 						p1Y = p1Y - 2 * moveUpDown, turnOver = true;
 				}
 				else
-				if (checkFuturePosition(p1X, p1Y - moveUpDown, p2X, p2Y)== 1)
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareL && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareL )
+				if (checkFuturePosition(p1X, p1Y - moveUpDown, p2X, p2Y)== 1 )
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareSideLength )
 					p1Y = p1Y - moveUpDown, turnOver = true;
 			}
-			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
-				return 0;
+			
 				}
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 					return 0;
+				if (event.type == SDL_QUIT)
+				{
+					isRunning = false;
+					return 0;
+				}
 			
 		
 	}
@@ -251,61 +250,65 @@ int playerTwoPlay()
 				}
 				if (highlighted == 1)
 				{
-					if (checkFuturePosition(p2X - moveLeftRight,p2Y,p1X,p1Y)==0 && p2X - 2 * moveLeftRight >= p1XS - (4 * moveLeftRight))
+					if (checkFuturePosition(p2X - moveLeftRight,p2Y,p1X,p1Y)==0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 					{
-						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 							p2X = p2X - 2 * moveLeftRight, turnOver = true;
 					}
 					else
-					if (p2X - moveLeftRight >= p1XS - (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - moveLeftRight && event.motion.x < p2X - moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+					if (p2X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - moveLeftRight && event.motion.x < p2X - moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 					{
 						p2X = p2X - moveLeftRight, turnOver = true;
 					}
 
 
 
-					if (checkFuturePosition(p2X + moveLeftRight, p2Y, p1X, p1Y)==0 && p2X + 2 * moveLeftRight <= p1XS + (4 * moveLeftRight))
-					{if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + 2 * moveLeftRight && event.motion.x < p2X + 2 * moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+					if (checkFuturePosition(p2X + moveLeftRight, p2Y, p1X, p1Y)==0 && p2X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
+					{if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + 2 * moveLeftRight && event.motion.x < p2X + 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 					
 						p2X = p2X + 2 * moveLeftRight, turnOver = true;
 					}
 					else
-					if (p2X + moveLeftRight <= p1XS + (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareL && event.motion.y > p2Y && event.motion.y < p2Y + squareL)
+					if (p2X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkFuturePosition(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 						p2X = p2X + moveLeftRight, turnOver = true;
 
 
 
-					if (p2Y + moveUpDown <= p1YS)
-					if (checkFuturePosition(p2X , p2Y+moveUpDown, p1X, p1Y)==0)
+					if (p2Y + moveUpDown <= p1Y_Start)
+					if (checkFuturePosition(p2X, p2Y + moveUpDown, p1X, p1Y) == 0 && p2Y + 2*moveUpDown <= p1Y_Start)
 					{
-						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y + 2*moveUpDown && event.motion.y < p2Y + 2*moveUpDown + squareL)
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + 2*moveUpDown && event.motion.y < p2Y + 2*moveUpDown + squareSideLength)
 						{
 							p2Y = p2Y + 2*moveUpDown, turnOver = true;
 						}
 					}
 					else 
 					if (checkFuturePosition(p2X, p2Y + moveUpDown, p1X, p1Y)==1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareSideLength)
 					{p2Y = p2Y + moveUpDown, turnOver = true;}
 
 					
 					
-					if (p2Y - moveUpDown >= p2YS)
-					if (checkFuturePosition(p2X, p2Y - moveUpDown, p1X, p1Y) == 0)
+					if (p2Y - moveUpDown >= p2Y_Start)
+					if (checkFuturePosition(p2X, p2Y - moveUpDown, p1X, p1Y) == 0 && p2Y -2* moveUpDown >= p2Y_Start)
 					{
-						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y -2* moveUpDown && event.motion.y < p2Y - 2*moveUpDown + squareL)
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y -2* moveUpDown && event.motion.y < p2Y - 2*moveUpDown + squareSideLength)
 							p2Y = p2Y - 2*moveUpDown, turnOver = true;
 					}
 					else
 					if (checkFuturePosition(p2X, p2Y - moveUpDown, p1X, p1Y) == 1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareL && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareL)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareSideLength)
 						p2Y = p2Y - moveUpDown, turnOver = true;
 				}
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 						return 0;
-				
+					if (event.type == SDL_QUIT)
+					{
+						isRunning = false;
+						return 0;
+					}
 			}
 
 
@@ -320,8 +323,9 @@ int playingAgainstHuman()
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
 	int menuCall=1;
-	p1X = p1XS, p1Y = p1YS, p2X = p2XS, p2Y = p2YS;
+	p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
 
 	while (isRunning)
 		while (SDL_PollEvent(&event))
@@ -335,8 +339,8 @@ int playingAgainstHuman()
 			if (menuCall == 0) return 0;
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
-			if (p1Y == p2YS) { Winner = 1; runPlayerWinTable(Winner); }
-			if (p2Y == p1YS) { Winner = 2; runPlayerWinTable(Winner); }
+			if (p1Y == p2Y_Start) { Winner = 1; runPlayerWinTable(Winner); }
+			if (p2Y == p1Y_Start) { Winner = 2; runPlayerWinTable(Winner); }
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;

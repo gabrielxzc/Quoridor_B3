@@ -19,6 +19,7 @@ bool playerOneTurn = true;
 short playerOneWalls = 10;
 short playerTwoWalls = 10;
 int p1X, p1Y, p2X, p2Y;
+short Winner;
 
 
 void addImageToRenderer(const char *file,int x, int y, int w, int h)
@@ -80,6 +81,40 @@ void highlightPossibleMoves(int X, int Y, int playerHighlighter)
 	}
 	SDL_RenderPresent(mainRenderer);
 }
+//.....
+void createPlayerWinTable(SDL_Event event, int Winner)
+{
+	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
+	SDL_RenderClear(mainRenderer);
+	if (Winner == 1) addImageToRenderer("images/PlayerOneWin.JPG", 0, 0, 800, 600);
+	if (Winner == 2) addImageToRenderer("images/PlayerTwoWin.JPG", 0, 0, 800, 600);
+	addImageToRenderer("images/backButton.PNG", 700, 550, 70, 40);
+
+	SDL_RenderPresent(mainRenderer);
+}
+
+int runPlayerWinTable(int Winner)
+{
+	SDL_Event event;
+	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
+	while (isRunning)
+	while (SDL_PollEvent(&event))
+	{
+		createPlayerWinTable(event,Winner);
+
+		if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
+			return 0;
+		if (event.type == SDL_QUIT)
+		{
+			isRunning = false;
+			return 0;
+		}
+	}
+	return 0;
+}
+
 
 int playingAgainstComputer()
 {
@@ -300,8 +335,8 @@ int playingAgainstHuman()
 			if (menuCall == 0) return 0;
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
-			if (p1Y == p2YS) return 0;
-			if (p2Y == p1YS) return 0;
+			if (p1Y == p2YS) { Winner = 1; runPlayerWinTable(Winner); }
+			if (p2Y == p1YS) { Winner = 2; runPlayerWinTable(Winner); }
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;

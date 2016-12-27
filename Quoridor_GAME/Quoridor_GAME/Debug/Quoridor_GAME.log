@@ -1,16 +1,15 @@
-﻿Build started 12/27/2016 3:56:42 PM.
-     1>Project "E:\GIT\Quoridor_B3\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
+﻿Build started 12/27/2016 4:36:11 PM.
+     1>Project "D:\GIT\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>e:\git\quoridor_b3\quoridor_game\quoridor_game\main.cpp(237): warning C4715: 'playerOnePlay' : not all control paths return a value
-     1>e:\git\quoridor_b3\quoridor_game\quoridor_game\main.cpp(328): warning C4715: 'playerTwoPlay' : not all control paths return a value
+     1>d:\git\quoridor\quoridor_game\quoridor_game\main.cpp(253): warning C4715: 'playerOnePlay' : not all control paths return a value
+     1>d:\git\quoridor\quoridor_game\quoridor_game\main.cpp(344): warning C4715: 'playerTwoPlay' : not all control paths return a value
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.lib" /MACHINE:X86 Debug\main.obj
-         LINK : E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.exe not found or not built by the last incremental link; performing full link
-         Quoridor_GAME.vcxproj -> E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.exe
-     1>Done Building Project "E:\GIT\Quoridor_B3\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GIT\Quoridor\Quoridor_GAME\Debug\Quoridor_GAME.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GIT\Quoridor\Quoridor_GAME\Debug\Quoridor_GAME.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GIT\Quoridor\Quoridor_GAME\Debug\Quoridor_GAME.lib" /MACHINE:X86 Debug\main.obj
+         Quoridor_GAME.vcxproj -> D:\GIT\Quoridor\Quoridor_GAME\Debug\Quoridor_GAME.exe
+     1>Done Building Project "D:\GIT\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.72
+Time Elapsed 00:00:00.86

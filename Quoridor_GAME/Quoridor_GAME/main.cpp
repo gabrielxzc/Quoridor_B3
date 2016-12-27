@@ -47,6 +47,22 @@ void createPlayTable()
 	addImageToRenderer("images/playerOne.PNG", p1X, p1Y, 35, 35);
 	addImageToRenderer("images/playerTwo.PNG", p2X, p2Y, 35, 35);
 
+	short WallLevel1 = p1Y_StartWalls, walls;
+
+	for (walls = 0; walls <= 9; walls++)
+	{
+		addImageToRenderer("images/pereteNotFilled.PNG", p1X_StartWalls, WallLevel1, WallWidth, WallLength);
+		WallLevel1 = WallLevel1 - SideWallsDistance;
+	}
+
+	short WallLevel2 = p2Y_StartWalls;
+
+	for (walls = 0; walls <= 9; walls++)
+	{
+		addImageToRenderer("images/pereteNotFilled.PNG", p2X_StartWalls, WallLevel2, WallWidth, WallLength);
+		WallLevel2 = WallLevel2 + SideWallsDistance;
+	}
+
 	SDL_RenderPresent(mainRenderer);
 }
 
@@ -334,7 +350,8 @@ int playingAgainstHuman()
 
 	int menuCall=1;
 	p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
-
+	playerOneWalls = 10;
+	playerTwoWalls = 10;
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{

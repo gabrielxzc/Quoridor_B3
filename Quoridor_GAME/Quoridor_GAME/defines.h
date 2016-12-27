@@ -5,3 +5,13 @@
 #define moveUpDown 56
 #define moveLeftRight 59
 #define squareSideLength 35
+
+#define p1X_StartWalls 9
+#define p1Y_StartWalls 544
+#define p2X_StartWalls 688 
+#define p2Y_StartWalls 42
+
+#define SideWallsDistance 18
+
+#define WallWidth 98
+#define WallLength 14

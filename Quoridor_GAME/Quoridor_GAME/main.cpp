@@ -22,7 +22,7 @@ struct wall {
 	bool placed;
 };
 
-wall wallMatrix[17][8];
+wall wallMatrix[19][9];
 
 bool mouseHoverVertical(SDL_Event event, int x, int y)
 {
@@ -113,7 +113,7 @@ void createPlayTable()
 
 	short WallLevel1 = p1Y_StartWalls, walls;
 
-	for (walls = 0; walls <= 9; walls++)
+	for (walls = 0; walls < playerOneWalls; walls++)
 	{
 		addImageToRenderer("images/pereteNotFilled.PNG", p1X_StartWalls, WallLevel1, WallWidth, WallLength);
 		WallLevel1 = WallLevel1 - SideWallsDistance;
@@ -121,10 +121,27 @@ void createPlayTable()
 
 	short WallLevel2 = p2Y_StartWalls;
 
-	for (walls = 0; walls <= 9; walls++)
+	for (walls = 0; walls < playerTwoWalls; walls++)
 	{
 		addImageToRenderer("images/pereteNotFilled.PNG", p2X_StartWalls, WallLevel2, WallWidth, WallLength);
 		WallLevel2 = WallLevel2 + SideWallsDistance;
+	}
+
+	for (int i = 0; i <= 15; i++)
+	{
+		for (int j = 0; j <= 7; j++)
+		{
+			if (i % 2 == 0)
+			{
+				if (wallMatrix[i][j].placed == true)
+					addImageToRenderer("images/pereteVerticalFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
+			}
+			else
+			{
+				if (wallMatrix[i][j].placed == true)
+					addImageToRenderer("images/pereteFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
+			}
+		}
 	}
 
 	SDL_RenderPresent(mainRenderer);
@@ -221,6 +238,72 @@ int playingAgainstComputer()
 	return 0;
 }
 
+void highlightWalls(SDL_Event event, int &highlightedWalls)
+{
+	for (int i = 0; i <= 15; i++)
+	{
+		for (int j = 0; j <= 7; j++)
+		{
+			if (i % 2 == 0)
+			{
+				if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+					createPlayTable();
+					addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
+					SDL_RenderPresent(mainRenderer);
+					highlightedWalls = 1;
+				}
+			}
+			else
+			{
+				if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+					createPlayTable();
+					addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
+					SDL_RenderPresent(mainRenderer);
+					highlightedWalls = 1;
+				}
+			}
+		}
+	}
+}
+
+void checkPlaceWall(SDL_Event event, bool &turnOver)
+{
+	for (int i = 0; i <= 15; i++)
+	{
+		for (int j = 0; j <= 7; j++)
+		{
+			if (i % 2 == 0)
+			{
+				if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
+					{
+						if (playerOneTurn)
+							playerOneWalls--;
+						else
+							playerTwoWalls--;
+						wallMatrix[i][j].placed = 1;
+						turnOver = true;
+					}
+				}
+			}
+			else
+			{
+				if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
+					{
+						if (playerOneTurn)
+							playerOneWalls--;
+						else
+							playerTwoWalls--;
+						wallMatrix[i][j].placed = 1;
+						turnOver = true;
+					}
+				}
+			}
+		}
+	}
+}
+
 int playerOnePlay()
 {
 	bool turnOver = false;
@@ -249,33 +332,11 @@ int playerOnePlay()
 
 			if (highlighted == 0)
 			{
-				for (int i = 0; i <= 15; i++)
-				{
-					for (int j = 0; j <= 7; j++)
-					{
-						if (i % 2 == 0)
-						{
-							if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
-								createPlayTable();
-								addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
-								SDL_RenderPresent(mainRenderer);
-								highlightedWalls = 1;
-							}
-						}
-						else
-						{
-							if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
-								createPlayTable();
-								addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
-								SDL_RenderPresent(mainRenderer);
-								highlightedWalls = 1;
-							}
-						}
-					}
-				}
+				highlightWalls(event, highlightedWalls);
+				checkPlaceWall(event, turnOver);
 			}
 
-			if (highlightedWalls == 0)
+			if (highlightedWalls == 0 && highlighted == 0)
 				createPlayTable();
 
 			if (highlighted == 1)
@@ -355,12 +416,13 @@ int playerTwoPlay()
 		bool turnOver = false;
 		SDL_Event event;
 		int highlighted = 0;
-		
+		int highlightedWalls = 0;
 
 		while (!turnOver)
 		{
 			while (SDL_PollEvent(&event))
 			{
+				highlightedWalls = 0;
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p2X && event.motion.x <= p2X + 35 && event.motion.y >= p2Y && event.motion.y <= p2Y + 35)
 				if (highlighted == 0)
 				{
@@ -370,6 +432,16 @@ int playerTwoPlay()
 				else{
 					createPlayTable(); highlighted = 0;
 				}
+
+				if (highlighted == 0)
+				{
+					highlightWalls(event, highlightedWalls);
+					checkPlaceWall(event, turnOver);
+				}
+
+				if (highlightedWalls == 0 && highlighted == 0)
+					createPlayTable();
+
 				if (highlighted == 1)
 				{
 					if (checkPlayerProximity(p2X - moveLeftRight,p2Y,p1X,p1Y)==0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))

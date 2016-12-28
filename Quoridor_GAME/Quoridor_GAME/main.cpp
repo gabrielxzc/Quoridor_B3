@@ -24,17 +24,29 @@ struct wall {
 
 wall wallMatrix[17][8];
 
+bool mouseHoverVertical(SDL_Event event, int x, int y)
+{
+	if (event.motion.x >= x && event.motion.x <= x + 18 && event.motion.y >= y && event.motion.y <= y + 43)
+		return true;
+	return false;
+}
+
+bool mouseHoverOrizontal(SDL_Event event, int x, int y)
+{
+	if (event.motion.x >= x && event.motion.x <= x + 40 && event.motion.y >= y && event.motion.y <= y + 15)
+		return true;
+	return false;
+}
+
 void initializeWallMatrix()
 {
 	int xImp, yImp, xPar, yPar, i, j;
-	xPar = 184;
-	yPar = 58;
-	xImp = 150;
+	yPar = 53;
 	yImp = 93;
 
-	for (i = 0; i <= 16; i++)
+	for (i = 0; i <= 15; i++)
 	{
-		xPar = 184;
+		xPar = 186;
 		xImp = 146;
 
 		for (j = 0; j <= 7; j++)
@@ -45,19 +57,19 @@ void initializeWallMatrix()
 			{
 				wallMatrix[i][j].x = xPar;
 				wallMatrix[i][j].y = yPar;
-				xPar = xPar + 60;
+				xPar = xPar + 59;
 			}
 			else
 			{
 				wallMatrix[i][j].x = xImp;
 				wallMatrix[i][j].y = yImp;
-				xImp = xImp + 59;
+				xImp = xImp + 58;
 			}
 		}
 
 		if (i % 2 == 0)
 		{
-			yPar = yPar + 58;
+			yPar = yPar + 56;
 		}
 
 		else
@@ -94,16 +106,10 @@ void createPlayTable()
 
 	SDL_RenderClear(mainRenderer);
 
-	initializeWallMatrix();
-
 	addImageToRenderer("images/gameBoard.JPG", 0, 0, 800, 600);
 	addImageToRenderer("images/backButton.PNG", 700, 550, 70, 40);
 	addImageToRenderer("images/playerOne.PNG", p1X, p1Y, 35, 35);
 	addImageToRenderer("images/playerTwo.PNG", p2X, p2Y, 35, 35);
-
-	for (int i = 1; i <= 16; i = i + 2)
-	for (int j = 1; j <= 7; j=j+2)
-		addImageToRenderer("images/pereteFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
 
 	short WallLevel1 = p1Y_StartWalls, walls;
 
@@ -220,15 +226,18 @@ int playerOnePlay()
 	bool turnOver = false;
 	SDL_Event event;
 	int highlighted = 0;
-	
+	int highlightedWalls = 0;
 
 	while (!turnOver)
 	{
 		while (SDL_PollEvent(&event))
 		{
+			highlightedWalls = 0;
+
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p1X && event.motion.x <= p1X + 35 && event.motion.y >= p1Y && event.motion.y <= p1Y + 35)
 			if (highlighted==0)	
 			{
+				createPlayTable();
 				highlightPossibleMoves(p1X, p1Y,1);
 				highlighted = 1;
 			}
@@ -240,8 +249,34 @@ int playerOnePlay()
 
 			if (highlighted == 0)
 			{
-
+				for (int i = 0; i <= 15; i++)
+				{
+					for (int j = 0; j <= 7; j++)
+					{
+						if (i % 2 == 0)
+						{
+							if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+								createPlayTable();
+								addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
+								SDL_RenderPresent(mainRenderer);
+								highlightedWalls = 1;
+							}
+						}
+						else
+						{
+							if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+								createPlayTable();
+								addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
+								SDL_RenderPresent(mainRenderer);
+								highlightedWalls = 1;
+							}
+						}
+					}
+				}
 			}
+
+			if (highlightedWalls == 0)
+				createPlayTable();
 
 			if (highlighted == 1)
 			{
@@ -412,9 +447,14 @@ int playingAgainstHuman()
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
 
 	int menuCall=1;
+
 	p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+
 	playerOneWalls = 10;
 	playerTwoWalls = 10;
+
+	initializeWallMatrix();
+
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{

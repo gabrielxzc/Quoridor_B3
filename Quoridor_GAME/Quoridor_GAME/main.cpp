@@ -16,6 +16,57 @@ short playerTwoWalls = 10;
 int p1X, p1Y, p2X, p2Y;
 short Winner;
 
+struct wall {
+	int x;
+	int y;
+	bool placed;
+};
+
+wall wallMatrix[17][8];
+
+void initializeWallMatrix()
+{
+	int xImp, yImp, xPar, yPar, i, j;
+	xPar = 184;
+	yPar = 58;
+	xImp = 150;
+	yImp = 93;
+
+	for (i = 0; i <= 16; i++)
+	{
+		xPar = 184;
+		xImp = 146;
+
+		for (j = 0; j <= 7; j++)
+		{
+			wallMatrix[i][j].placed = false;
+
+			if (i % 2 == 0)
+			{
+				wallMatrix[i][j].x = xPar;
+				wallMatrix[i][j].y = yPar;
+				xPar = xPar + 60;
+			}
+			else
+			{
+				wallMatrix[i][j].x = xImp;
+				wallMatrix[i][j].y = yImp;
+				xImp = xImp + 59;
+			}
+		}
+
+		if (i % 2 == 0)
+		{
+			yPar = yPar + 58;
+		}
+
+		else
+		{
+			yImp = yImp + 56;
+		}
+
+	}
+}
 
 void addImageToRenderer(const char *file,int x, int y, int w, int h)
 {
@@ -30,6 +81,7 @@ void addImageToRenderer(const char *file,int x, int y, int w, int h)
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
 }
+
 int checkPlayerProximity(int xFuture, int yFuture, int xOtherPlayer, int yOtherPlayer)
 {
 	if (xFuture == xOtherPlayer && yFuture == yOtherPlayer) return 0;
@@ -42,10 +94,16 @@ void createPlayTable()
 
 	SDL_RenderClear(mainRenderer);
 
+	initializeWallMatrix();
+
 	addImageToRenderer("images/gameBoard.JPG", 0, 0, 800, 600);
 	addImageToRenderer("images/backButton.PNG", 700, 550, 70, 40);
 	addImageToRenderer("images/playerOne.PNG", p1X, p1Y, 35, 35);
 	addImageToRenderer("images/playerTwo.PNG", p2X, p2Y, 35, 35);
+
+	for (int i = 1; i <= 16; i = i + 2)
+	for (int j = 1; j <= 7; j=j+2)
+		addImageToRenderer("images/pereteFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
 
 	short WallLevel1 = p1Y_StartWalls, walls;
 
@@ -98,7 +156,7 @@ void highlightPossibleMoves(int X, int Y, int playerHighlighter)
 	}
 	SDL_RenderPresent(mainRenderer);
 }
-//.....
+
 void createPlayerWinTable(SDL_Event event, int Winner)
 {
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
@@ -133,7 +191,6 @@ int runPlayerWinTable(int Winner)
 	}
 	return 0;
 }
-
 
 int playingAgainstComputer()
 {
@@ -175,9 +232,17 @@ int playerOnePlay()
 				highlightPossibleMoves(p1X, p1Y,1);
 				highlighted = 1;
 			}
-			else{
-				createPlayTable(); highlighted = 0;
+			else
+			{
+				createPlayTable();
+				highlighted = 0;
 			}
+
+			if (highlighted == 0)
+			{
+
+			}
+
 			if (highlighted == 1)
 			{
 
@@ -245,8 +310,6 @@ int playerOnePlay()
 					isRunning = false;
 					return 0;
 				}
-			
-		
 	}
 
 	playerOneTurn = false;

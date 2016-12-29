@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <stdlib.h>
 
 #include "defines.h"
 
@@ -392,6 +393,10 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 						else
 							playerTwoWalls--;
 
+						gameMatrix[i][j * 2 + 1] = -1;
+						gameMatrix[i + 1][j * 2 + 1] = -1;
+						gameMatrix[i + 2][j * 2 + 1] = -1;
+
 						wallMatrix[i][j].placed = 1;
 						turnOver = true;
 					}
@@ -406,6 +411,10 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 							playerOneWalls--;
 						else
 							playerTwoWalls--;
+
+						gameMatrix[i][j * 2 ] = -1;
+						gameMatrix[i][j * 2 + 1] = -1;
+						gameMatrix[i][j * 2 + 2] = -1;
 
 						wallMatrix[i][j].placed = 1;
 						turnOver = true;
@@ -464,28 +473,45 @@ int playerOnePlay()
 
 				if (checkPlayerProximity(p1X - moveLeftRight, p1Y, p2X, p2Y) == 0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength){
 						p1X = p1X - 2 * moveLeftRight, turnOver = true;
+
+						gameMatrix[playerOne.line][playerOne.column] = 0;
+						playerOne.column -= 4;
+						gameMatrix[playerOne.line][playerOne.column] = 1;
+					}
 				}
 				else
 				if (p1X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - moveLeftRight && event.motion.x < p1X - moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 				{
 					p1X = p1X - moveLeftRight, turnOver = true;
+					gameMatrix[playerOne.line][playerOne.column] = 0;
+					playerOne.column -= 2;
+					gameMatrix[playerOne.line][playerOne.column] = 1;
 				}
 
 
 
 				if ( checkPlayerProximity (p1X + moveLeftRight,p1Y,p2X, p2Y)==0 && p1X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + 2 * moveLeftRight && event.motion.x < p1X + 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
-				
-					p1X = p1X + 2 * moveLeftRight, turnOver = true;
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + 2 * moveLeftRight && event.motion.x < p1X + 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength){
+						p1X = p1X + 2 * moveLeftRight, turnOver = true;
+
+						gameMatrix[playerOne.line][playerOne.column] = 0;
+						playerOne.column += 4;
+						gameMatrix[playerOne.line][playerOne.column] = 1;
+					}
 				}
 				else
 				if (p1X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p1X + moveLeftRight, p1Y, p2X, p2Y) ==1 )
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength){
 					p1X = p1X + moveLeftRight, turnOver = true;
+
+					gameMatrix[playerOne.line][playerOne.column] = 0;
+					playerOne.column += 2;
+					gameMatrix[playerOne.line][playerOne.column] = 1;
+				}
 
 
 
@@ -495,6 +521,10 @@ int playerOnePlay()
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y + 2 * moveUpDown && event.motion.y < p1Y + 2 * moveUpDown + squareSideLength)
 					{
 						p1Y = p1Y + 2*moveUpDown, turnOver = true;
+
+						gameMatrix[playerOne.line][playerOne.column] = 0;
+						playerOne.line -= 4;
+						gameMatrix[playerOne.line][playerOne.column] = 1;
 					}
 				}
 				else
@@ -502,6 +532,10 @@ int playerOnePlay()
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y + moveUpDown && event.motion.y < p1Y + moveUpDown + squareSideLength)
 				{
 					p1Y = p1Y + moveUpDown, turnOver = true;
+
+					gameMatrix[playerOne.line][playerOne.column] = 0;
+					playerOne.line -= 2;
+					gameMatrix[playerOne.line][playerOne.column] = 1;
 				}
 
 
@@ -509,13 +543,23 @@ int playerOnePlay()
 				if (p1Y - moveUpDown >= p2Y_Start)
 				if (checkPlayerProximity(p1X, p1Y - moveUpDown, p2X, p2Y) == 0 && p1Y - 2*moveUpDown >= p2Y_Start)
 				{
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - 2 * moveUpDown && event.motion.y < p1Y - 2 * moveUpDown + squareSideLength)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - 2 * moveUpDown && event.motion.y < p1Y - 2 * moveUpDown + squareSideLength){
 						p1Y = p1Y - 2 * moveUpDown, turnOver = true;
+
+						gameMatrix[playerOne.line][playerOne.column] = 0;
+						playerOne.line -= 4;
+						gameMatrix[playerOne.line][playerOne.column] = 1;
+					}
 				}
 				else
 				if (checkPlayerProximity(p1X, p1Y - moveUpDown, p2X, p2Y)== 1 )
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareSideLength )
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareSideLength){
 					p1Y = p1Y - moveUpDown, turnOver = true;
+
+					gameMatrix[playerOne.line][playerOne.column] = 0;
+					playerOne.line -= 2;
+					gameMatrix[playerOne.line][playerOne.column] = 1;
+				}
 			}
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
@@ -576,27 +620,46 @@ int playerTwoPlay()
 				{
 					if (checkPlayerProximity(p2X - moveLeftRight,p2Y,p1X,p1Y) == 0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 					{
-						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength){
 							p2X = p2X - 2 * moveLeftRight, turnOver = true;
+
+							gameMatrix[playerTwo.line][playerTwo.column] = 0;
+							playerTwo.column -= 4;
+							gameMatrix[playerTwo.line][playerTwo.column] = 2;
+						}
 					}
 					else
 					if (p2X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - moveLeftRight && event.motion.x < p2X - moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 					{
 						p2X = p2X - moveLeftRight, turnOver = true;
+
+						gameMatrix[playerTwo.line][playerTwo.column] = 0;
+						playerTwo.column -= 2;
+						gameMatrix[playerTwo.line][playerTwo.column] = 2;
 					}
 
 
 
 					if (checkPlayerProximity(p2X + moveLeftRight, p2Y, p1X, p1Y)==0 && p2X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
-					{if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + 2 * moveLeftRight && event.motion.x < p2X + 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
-					
-						p2X = p2X + 2 * moveLeftRight, turnOver = true;
+					{
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + 2 * moveLeftRight && event.motion.x < p2X + 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength){
+							p2X = p2X + 2 * moveLeftRight, turnOver = true;
+
+							gameMatrix[playerTwo.line][playerTwo.column] = 0;
+							playerTwo.column += 4;
+							gameMatrix[playerTwo.line][playerTwo.column] = 2;
+						}
 					}
 					else
 					if (p2X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength){
 						p2X = p2X + moveLeftRight, turnOver = true;
+
+						gameMatrix[playerTwo.line][playerTwo.column] = 0;
+						playerTwo.column += 2;
+						gameMatrix[playerTwo.line][playerTwo.column] = 2;
+					}
 
 
 
@@ -606,25 +669,44 @@ int playerTwoPlay()
 						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + 2*moveUpDown && event.motion.y < p2Y + 2*moveUpDown + squareSideLength)
 						{
 							p2Y = p2Y + 2*moveUpDown, turnOver = true;
+
+							gameMatrix[playerTwo.line][playerTwo.column] = 0;
+							playerTwo.line += 4;
+							gameMatrix[playerTwo.line][playerTwo.column] = 2;
 						}
 					}
 					else 
 					if (checkPlayerProximity(p2X, p2Y + moveUpDown, p1X, p1Y)==1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareSideLength)
-					{p2Y = p2Y + moveUpDown, turnOver = true;}
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareSideLength) {
+						p2Y = p2Y + moveUpDown, turnOver = true;
+
+						gameMatrix[playerTwo.line][playerTwo.column] = 0;
+						playerTwo.line += 2;
+						gameMatrix[playerTwo.line][playerTwo.column] = 2;
+					}
 
 					
 					
 					if (p2Y - moveUpDown >= p2Y_Start)
 					if (checkPlayerProximity(p2X, p2Y - moveUpDown, p1X, p1Y) == 0 && p2Y -2* moveUpDown >= p2Y_Start)
 					{
-						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y -2* moveUpDown && event.motion.y < p2Y - 2*moveUpDown + squareSideLength)
-							p2Y = p2Y - 2*moveUpDown, turnOver = true;
+						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y - 2 * moveUpDown && event.motion.y < p2Y - 2 * moveUpDown + squareSideLength){
+							p2Y = p2Y - 2 * moveUpDown, turnOver = true;
+
+							gameMatrix[playerTwo.line][playerTwo.column] = 0;
+							playerTwo.line -= 4;
+							gameMatrix[playerTwo.line][playerTwo.column] = 2;
+						}
 					}
 					else
 					if (checkPlayerProximity(p2X, p2Y - moveUpDown, p1X, p1Y) == 1)
-					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareSideLength)
+					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareSideLength){
 						p2Y = p2Y - moveUpDown, turnOver = true;
+
+						gameMatrix[playerTwo.line][playerTwo.column] = 0;
+						playerTwo.line -= 2;
+						gameMatrix[playerTwo.line][playerTwo.column] = 2;
+					}
 				}
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 						return 0;
@@ -662,6 +744,18 @@ int playingAgainstHuman()
 		while (SDL_PollEvent(&event))
 		{
 			createPlayTable();
+
+			system("cls");
+
+			for (int i = 0; i < 17; i++)
+			{
+				for (int j = 0; j < 17; j++)
+					cout << gameMatrix[i][j] << ' ';
+				cout << '\n';
+			}
+
+			cout << playerOne.line << "  " << playerOne.column << '\n';
+			cout << playerTwo.line << "  " << playerTwo.column << '\n';
 
 			if (playerOneTurn)
 			menuCall=playerOnePlay();

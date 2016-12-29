@@ -29,6 +29,39 @@ struct wall {
 
 wall wallMatrix[16][8];
 
+struct gameBoardSquare{
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
+gameBoardSquare gameBoardSquareMatrix[9][9];
+
+void initializeGameBoardSquaresCoordinates()
+{
+	int line, column;
+	int currentX, currentY = 56;
+
+	for (line = 0; line < 9; line++)
+	{
+		currentX = 147;
+
+		for (column = 0; column < 9; column++)
+		{
+			gameBoardSquareMatrix[line][column].width = 35;
+			gameBoardSquareMatrix[line][column].height = 35;
+
+			gameBoardSquareMatrix[line][column].x = currentX;
+			gameBoardSquareMatrix[line][column].y = currentY;
+
+			currentX += 59;
+		}
+
+		currentY += 56;
+	}
+}
+
 bool mouseHoverVerticalWall(SDL_Event event, int x, int y)
 {
 	if (event.motion.x >= x && event.motion.x <= x + 18 && event.motion.y >= y && event.motion.y <= y + 43)
@@ -254,6 +287,17 @@ bool noHorizontalWallsAround(int line, int column)
 	return true;
 }
 
+bool stillHasWalls(short playerTurn)
+{
+	if (playerOneTurn == true && playerOneWalls == 0)
+		return false;
+
+	if (playerOneTurn == false && playerTwoWalls == 0)
+		return false;
+
+	return true;
+}
+
 int playingAgainstComputer()
 {
 	SDL_Event event;
@@ -277,7 +321,7 @@ int playingAgainstComputer()
 	return 0;
 }
 
-void highlightWalls(SDL_Event event, int &highlightedWalls)
+void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 {
 	for (int i = 0; i <= 15; i++)
 	{
@@ -285,7 +329,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls)
 		{
 			if (i % 2 == 0)
 			{
-				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i,j)){
+				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i,j) && stillHasWalls(playerTurn)){
 					createPlayTable();
 					addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
 					SDL_RenderPresent(mainRenderer);
@@ -294,7 +338,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls)
 			}
 			else
 			{
-				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i,j)){
+				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j) && stillHasWalls(playerTurn)){
 					createPlayTable();
 					addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
 					SDL_RenderPresent(mainRenderer);
@@ -305,7 +349,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls)
 	}
 }
 
-void checkPlaceWall(SDL_Event event, bool &turnOver)
+void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 {
 	for (int i = 0; i <= 15; i++)
 	{
@@ -313,7 +357,7 @@ void checkPlaceWall(SDL_Event event, bool &turnOver)
 		{
 			if (i % 2 == 0)
 			{
-				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i, j)){
+				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i, j) && stillHasWalls(playerTurn)){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
@@ -328,7 +372,7 @@ void checkPlaceWall(SDL_Event event, bool &turnOver)
 			}
 			else
 			{
-				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j)){
+				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j) && stillHasWalls(playerTurn)){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
@@ -377,8 +421,8 @@ int playerOnePlay()
 
 			if (highlighted == 0)
 			{
-				highlightWalls(event, highlightedWalls);
-				checkPlaceWall(event, turnOver);
+				highlightWalls(event, highlightedWalls, 1);
+				checkPlaceWall(event, turnOver, 1);
 			}
 
 			if (highlightedWalls == 0 && highlighted == 0)
@@ -442,15 +486,15 @@ int playerOnePlay()
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareSideLength )
 					p1Y = p1Y - moveUpDown, turnOver = true;
 			}
-			
-				}
-				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
-					return 0;
-				if (event.type == SDL_QUIT)
-				{
-					isRunning = false;
-					return 0;
-				}
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
+				return 0;
+			if (event.type == SDL_QUIT)
+			{
+				isRunning = false;
+				return 0;
+			}
+		}
 	}
 
 	playerOneTurn = false;
@@ -468,20 +512,25 @@ int playerTwoPlay()
 			while (SDL_PollEvent(&event))
 			{
 				highlightedWalls = 0;
+
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p2X && event.motion.x <= p2X + 35 && event.motion.y >= p2Y && event.motion.y <= p2Y + 35)
-				if (highlighted == 0)
 				{
-					highlightPossibleMoves(p2X, p2Y,2);
-					highlighted = 1;
-				}
-				else{
-					createPlayTable(); highlighted = 0;
+					if (highlighted == 0)
+					{
+						highlightPossibleMoves(p2X, p2Y, 2);
+						highlighted = 1;
+					}
+					else
+					{
+						createPlayTable(); 
+						highlighted = 0;
+					}
 				}
 
 				if (highlighted == 0)
 				{
-					highlightWalls(event, highlightedWalls);
-					checkPlaceWall(event, turnOver);
+					highlightWalls(event, highlightedWalls, 2);
+					checkPlaceWall(event, turnOver, 2);
 				}
 
 				if (highlightedWalls == 0 && highlighted == 0)
@@ -489,7 +538,7 @@ int playerTwoPlay()
 
 				if (highlighted == 1)
 				{
-					if (checkPlayerProximity(p2X - moveLeftRight,p2Y,p1X,p1Y)==0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+					if (checkPlayerProximity(p2X - moveLeftRight,p2Y,p1X,p1Y) == 0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 					{
 						if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - 2 * moveLeftRight && event.motion.x < p2X - 2 * moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 							p2X = p2X - 2 * moveLeftRight, turnOver = true;
@@ -739,6 +788,7 @@ int main(int argc, char* argv[])
 
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
 
+	initializeGameBoardSquaresCoordinates();
 	runMainMenu();
 
 	SDL_DestroyRenderer(mainRenderer);

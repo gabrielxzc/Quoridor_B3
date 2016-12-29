@@ -21,6 +21,8 @@ int p1X, p1Y, p2X, p2Y;
 
 short Winner;
 
+short gameMatrix[17][17];
+
 struct wall {
 	int x;
 	int y;
@@ -37,6 +39,31 @@ struct gameBoardSquare{
 };
 
 gameBoardSquare gameBoardSquareMatrix[9][9];
+
+struct playerInMatrix{
+	int line;
+	int column;
+};
+
+playerInMatrix playerOne, playerTwo;
+
+void initializeGameMatrix()
+{
+	short line, column;
+	for (line = 0; line < 17; line++)
+	{
+		for (column = 0; column < 17; column++)
+			gameMatrix[line][column] = 0;
+	}
+
+	playerOne.line = 16;
+	playerOne.column = 8;
+	playerTwo.line = 0;
+	playerTwo.column = 8;
+
+	gameMatrix[playerOne.line][playerOne.column] = 1;
+	gameMatrix[playerTwo.line][playerTwo.column] = 2;
+}
 
 void initializeGameBoardSquaresCoordinates()
 {
@@ -423,6 +450,10 @@ int playerOnePlay()
 			{
 				highlightWalls(event, highlightedWalls, 1);
 				checkPlaceWall(event, turnOver, 1);
+				if (turnOver){
+					playerOneTurn = false;
+					return 1;
+				}
 			}
 
 			if (highlightedWalls == 0 && highlighted == 0)
@@ -531,6 +562,11 @@ int playerTwoPlay()
 				{
 					highlightWalls(event, highlightedWalls, 2);
 					checkPlaceWall(event, turnOver, 2);
+
+					if (turnOver){
+						playerOneTurn = true;
+						return 1;
+					}
 				}
 
 				if (highlightedWalls == 0 && highlighted == 0)
@@ -620,6 +656,7 @@ int playingAgainstHuman()
 	playerTwoWalls = 10;
 
 	initializeWallMatrix();
+	initializeGameMatrix();
 
 	while (isRunning)
 		while (SDL_PollEvent(&event))
@@ -630,6 +667,7 @@ int playingAgainstHuman()
 			menuCall=playerOnePlay();
 			else
 				menuCall=playerTwoPlay();
+
 			if (menuCall == 0) return 0;
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;

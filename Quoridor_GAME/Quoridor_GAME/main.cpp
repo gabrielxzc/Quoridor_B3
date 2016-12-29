@@ -9,11 +9,16 @@ using namespace std;
 
 SDL_Window *mainWindow = nullptr;
 SDL_Renderer *mainRenderer = nullptr;
+
 bool isRunning = true; // Inchide tot programul
+
 bool playerOneTurn = true;
+
 short playerOneWalls = 10;
 short playerTwoWalls = 10;
+
 int p1X, p1Y, p2X, p2Y;
+
 short Winner;
 
 struct wall {
@@ -22,16 +27,16 @@ struct wall {
 	bool placed;
 };
 
-wall wallMatrix[19][9];
+wall wallMatrix[16][8];
 
-bool mouseHoverVertical(SDL_Event event, int x, int y)
+bool mouseHoverVerticalWall(SDL_Event event, int x, int y)
 {
 	if (event.motion.x >= x && event.motion.x <= x + 18 && event.motion.y >= y && event.motion.y <= y + 43)
 		return true;
 	return false;
 }
 
-bool mouseHoverOrizontal(SDL_Event event, int x, int y)
+bool mouseHoverOrizontalWall(SDL_Event event, int x, int y)
 {
 	if (event.motion.x >= x && event.motion.x <= x + 40 && event.motion.y >= y && event.motion.y <= y + 15)
 		return true;
@@ -215,6 +220,40 @@ int runPlayerWinTable(int Winner)
 	return 0;
 }
 
+bool noVerticalWallsAround(int line, int column)
+{
+	if (wallMatrix[line][column].placed == true)
+		return false;
+
+	if (line >= 2 && wallMatrix[line - 2][column].placed == true)
+		return false;
+
+	if (line <= 12 && wallMatrix[line + 2][column].placed == true)
+		return false;
+
+	if (wallMatrix[line + 1][column].placed == true)
+		return false;
+
+	return true;
+}
+
+bool noHorizontalWallsAround(int line, int column)
+{
+	if (wallMatrix[line][column].placed == true)
+		return false;
+
+	if (column >= 1 && wallMatrix[line][column - 1].placed == true)
+		return false;
+
+	if (column <= 6 && wallMatrix[line][column + 1].placed == true)
+		return false;
+
+	if (wallMatrix[line - 1][column].placed == true)
+		return false;
+
+	return true;
+}
+
 int playingAgainstComputer()
 {
 	SDL_Event event;
@@ -246,7 +285,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls)
 		{
 			if (i % 2 == 0)
 			{
-				if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i,j)){
 					createPlayTable();
 					addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
 					SDL_RenderPresent(mainRenderer);
@@ -255,7 +294,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls)
 			}
 			else
 			{
-				if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i,j)){
 					createPlayTable();
 					addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
 					SDL_RenderPresent(mainRenderer);
@@ -274,13 +313,14 @@ void checkPlaceWall(SDL_Event event, bool &turnOver)
 		{
 			if (i % 2 == 0)
 			{
-				if (mouseHoverVertical(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i, j)){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
 							playerOneWalls--;
 						else
 							playerTwoWalls--;
+
 						wallMatrix[i][j].placed = 1;
 						turnOver = true;
 					}
@@ -288,13 +328,14 @@ void checkPlaceWall(SDL_Event event, bool &turnOver)
 			}
 			else
 			{
-				if (mouseHoverOrizontal(event, wallMatrix[i][j].x, wallMatrix[i][j].y)){
+				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j)){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
 							playerOneWalls--;
 						else
 							playerTwoWalls--;
+
 						wallMatrix[i][j].placed = 1;
 						turnOver = true;
 					}
@@ -307,7 +348,9 @@ void checkPlaceWall(SDL_Event event, bool &turnOver)
 int playerOnePlay()
 {
 	bool turnOver = false;
+
 	SDL_Event event;
+
 	int highlighted = 0;
 	int highlightedWalls = 0;
 
@@ -318,16 +361,18 @@ int playerOnePlay()
 			highlightedWalls = 0;
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= p1X && event.motion.x <= p1X + 35 && event.motion.y >= p1Y && event.motion.y <= p1Y + 35)
-			if (highlighted==0)	
 			{
-				createPlayTable();
-				highlightPossibleMoves(p1X, p1Y,1);
-				highlighted = 1;
-			}
-			else
-			{
-				createPlayTable();
-				highlighted = 0;
+				if (highlighted == 0)
+				{
+					createPlayTable();
+					highlightPossibleMoves(p1X, p1Y, 1);
+					highlighted = 1;
+				}
+				else
+				{
+					createPlayTable();
+					highlighted = 0;
+				}
 			}
 
 			if (highlighted == 0)
@@ -342,7 +387,7 @@ int playerOnePlay()
 			if (highlighted == 1)
 			{
 
-				if (checkPlayerProximity(p1X - moveLeftRight,p1Y, p2X, p2Y)==0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+				if (checkPlayerProximity(p1X - moveLeftRight, p1Y, p2X, p2Y) == 0 && p2X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
 				{
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - 2 * moveLeftRight && event.motion.x < p1X - 2 * moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 						p1X = p1X - 2 * moveLeftRight, turnOver = true;
@@ -604,7 +649,7 @@ int runStartGameMenu()
 	return 0;
 }
 
-void createInstructionsMenu(SDL_Event event)
+void renderInstructionsMenu(SDL_Event event)
 {
 	SDL_RenderClear(mainRenderer);
 
@@ -622,7 +667,7 @@ int runInstructionsMenu()
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{
-			createInstructionsMenu(event);
+			renderInstructionsMenu(event);
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
 				return 0;
@@ -635,7 +680,7 @@ int runInstructionsMenu()
 	return 0;
 }
 
-void createMainMenu(SDL_Event event)
+void renderMainMenu(SDL_Event event)
 {
 	SDL_RenderClear(mainRenderer);
 
@@ -667,7 +712,7 @@ int runMainMenu()
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{
-			createMainMenu(event);
+			renderMainMenu(event);
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 225 && event.motion.x < 575 && event.motion.y > 175 && event.motion.y < 275))
 				runStartGameMenu();

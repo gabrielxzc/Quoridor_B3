@@ -482,10 +482,11 @@ int playerOnePlay()
 					}
 				}
 				else
-				if (p1X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1)
+				if (p1X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p1X - moveLeftRight, p1Y, p2X, p2Y) == 1 && gameMatrix[playerOne.line][playerOne.column-1]!=-1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X - moveLeftRight && event.motion.x < p1X - moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength)
 				{
 					p1X = p1X - moveLeftRight, turnOver = true;
+
 					gameMatrix[playerOne.line][playerOne.column] = 0;
 					playerOne.column -= 2;
 					gameMatrix[playerOne.line][playerOne.column] = 1;
@@ -504,7 +505,7 @@ int playerOnePlay()
 					}
 				}
 				else
-				if (p1X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p1X + moveLeftRight, p1Y, p2X, p2Y) ==1 )
+				if (p1X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p1X + moveLeftRight, p1Y, p2X, p2Y) == 1 && gameMatrix[playerOne.line][playerOne.column + 1] != -1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X + moveLeftRight && event.motion.x < p1X + moveLeftRight + squareSideLength && event.motion.y > p1Y && event.motion.y < p1Y + squareSideLength){
 					p1X = p1X + moveLeftRight, turnOver = true;
 
@@ -523,18 +524,18 @@ int playerOnePlay()
 						p1Y = p1Y + 2*moveUpDown, turnOver = true;
 
 						gameMatrix[playerOne.line][playerOne.column] = 0;
-						playerOne.line -= 4;
+						playerOne.line += 4;
 						gameMatrix[playerOne.line][playerOne.column] = 1;
 					}
 				}
 				else
-				if (checkPlayerProximity(p1X, p1Y + moveUpDown, p2X, p2Y)==1)
+				if (checkPlayerProximity(p1X, p1Y + moveUpDown, p2X, p2Y) == 1 && gameMatrix[playerOne.line+1][playerOne.column] != -1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y + moveUpDown && event.motion.y < p1Y + moveUpDown + squareSideLength)
 				{
 					p1Y = p1Y + moveUpDown, turnOver = true;
 
 					gameMatrix[playerOne.line][playerOne.column] = 0;
-					playerOne.line -= 2;
+					playerOne.line += 2;
 					gameMatrix[playerOne.line][playerOne.column] = 1;
 				}
 
@@ -552,7 +553,7 @@ int playerOnePlay()
 					}
 				}
 				else
-				if (checkPlayerProximity(p1X, p1Y - moveUpDown, p2X, p2Y)== 1 )
+				if (checkPlayerProximity(p1X, p1Y - moveUpDown, p2X, p2Y) == 1 && gameMatrix[playerOne.line-1][playerOne.column] != -1)
 				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p1X && event.motion.x < p1X + squareSideLength && event.motion.y > p1Y - moveUpDown && event.motion.y < p1Y - moveUpDown + squareSideLength){
 					p1Y = p1Y - moveUpDown, turnOver = true;
 
@@ -629,7 +630,7 @@ int playerTwoPlay()
 						}
 					}
 					else
-					if (p2X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
+					if (p2X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y) == 1 && gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X - moveLeftRight && event.motion.x < p2X - moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength)
 					{
 						p2X = p2X - moveLeftRight, turnOver = true;
@@ -652,7 +653,7 @@ int playerTwoPlay()
 						}
 					}
 					else
-					if (p2X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y)==1)
+					if (p2X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(p2X - moveLeftRight, p2Y, p1X, p1Y) == 1 && gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X + moveLeftRight && event.motion.x < p2X + moveLeftRight + squareSideLength && event.motion.y > p2Y && event.motion.y < p2Y + squareSideLength){
 						p2X = p2X + moveLeftRight, turnOver = true;
 
@@ -676,7 +677,7 @@ int playerTwoPlay()
 						}
 					}
 					else 
-					if (checkPlayerProximity(p2X, p2Y + moveUpDown, p1X, p1Y)==1)
+					if (checkPlayerProximity(p2X, p2Y + moveUpDown, p1X, p1Y) == 1 && gameMatrix[playerTwo.line + 1][playerTwo.column] != -1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y + moveUpDown && event.motion.y < p2Y + moveUpDown + squareSideLength) {
 						p2Y = p2Y + moveUpDown, turnOver = true;
 
@@ -699,7 +700,7 @@ int playerTwoPlay()
 						}
 					}
 					else
-					if (checkPlayerProximity(p2X, p2Y - moveUpDown, p1X, p1Y) == 1)
+					if (checkPlayerProximity(p2X, p2Y - moveUpDown, p1X, p1Y) == 1 && gameMatrix[playerTwo.line-1][playerTwo.column] != -1)
 					if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > p2X && event.motion.x < p2X + squareSideLength && event.motion.y > p2Y - moveUpDown && event.motion.y < p2Y - moveUpDown + squareSideLength){
 						p2Y = p2Y - moveUpDown, turnOver = true;
 

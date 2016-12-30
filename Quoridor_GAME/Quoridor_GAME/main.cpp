@@ -217,31 +217,145 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 {
 	if (playerHighlighter == 1)
 	{
-		if (checkPlayerProximity(X-moveLeftRight,Y,p2X,p2Y)==0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
-		else if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 1 && gameMatrix[player.line][player.column-1]!=-1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+		if (checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+		{
+			if (gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+			else
+			{
+				if (gameMatrix[playerTwo.line - 1][playerTwo.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2 - 1][playerTwo.column / 2].x, gameBoardSquareMatrix[playerTwo.line / 2 - 1][playerTwo.column / 2].y, 35, 35);
+
+				if (gameMatrix[playerTwo.line + 1][playerTwo.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2 + 1][playerTwo.column / 2].x, gameBoardSquareMatrix[playerTwo.line / 2 + 1][playerTwo.column / 2].y, 35, 35);
+			}
+		}
+		else 
+			if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 1 && gameMatrix[player.line][player.column-1]!=-1) 
+				addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
 		
-		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
-		else  if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y)==1 && gameMatrix[player.line][player.column+1]!=-1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+
+		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
+		{
+			if (gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+			else
+			{
+				if (gameMatrix[playerTwo.line - 1][playerTwo.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2 - 1][playerTwo.column / 2].x, gameBoardSquareMatrix[playerTwo.line / 2 - 1][playerTwo.column / 2].y, 35, 35);
+
+				if (gameMatrix[playerTwo.line + 1][playerTwo.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2 + 1][playerTwo.column / 2].x, gameBoardSquareMatrix[playerTwo.line / 2 + 1][playerTwo.column / 2].y, 35, 35);
+			}
+		}
+		else  
+			if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y)==1 && gameMatrix[player.line][player.column+1]!=-1) 
+				addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
 		
-		if (checkPlayerProximity(X , Y+moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
-		else if (Y + moveUpDown <= p1Y_Start &&checkPlayerProximity(X, Y + moveUpDown, p2X, p2Y)==1 && gameMatrix[player.line+1][player.column]!=-1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+
+		if (checkPlayerProximity(X, Y + moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start)
+		{
+			if (gameMatrix[playerTwo.line + 1][playerTwo.column] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+			else
+			{
+				if (gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 - 1].x, gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 - 1].y, 35, 35);
+				if (gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 + 1].x, gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 + 1].y, 35, 35);
+			}
+		}
+		else 
+			if (Y + moveUpDown <= p1Y_Start &&checkPlayerProximity(X, Y + moveUpDown, p2X, p2Y)==1 && gameMatrix[player.line+1][player.column]!=-1) 
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
 		
-		if (checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
-		else	if (Y - moveUpDown >= p2Y_Start && checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y)==1 && gameMatrix[player.line-1][player.column]!=-1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+
+		if (checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start)
+		{
+			if (gameMatrix[playerTwo.line - 1][playerTwo.column] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+			else
+			{
+				if (gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 - 1].x, gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 - 1].y, 35, 35);
+				if (gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 + 1].x, gameBoardSquareMatrix[playerTwo.line / 2][playerTwo.column / 2 + 1].y, 35, 35);
+			}
+		}
+		else 
+			if (Y - moveUpDown >= p2Y_Start && checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y)==1 && gameMatrix[player.line-1][player.column]!=-1) 
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
 	}
 	if (playerHighlighter == 2)
 	{
-		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
-		else if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 1 && gameMatrix[player.line][player.column - 1] != -1) addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
-		
-		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight)) addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
-		else  if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 1 && gameMatrix[player.line][player.column + 1] != -1) addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
-		
-		if (checkPlayerProximity(X , Y+moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
-		else if (Y + moveUpDown <= p1Y_Start && checkPlayerProximity(X, Y + moveUpDown, p1X, p1Y) == 1 && gameMatrix[player.line + 1][player.column] != -1) addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
-		
-		if (checkPlayerProximity(X , Y-moveUpDown, p1X, p1Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start) addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
-		else	if (Y - moveUpDown >= p2Y_Start&& checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y) == 1 && gameMatrix[player.line - 1][player.column] != -1) addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
+		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+		{
+			if (gameMatrix[playerOne.line][playerOne.column - 1] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
+			else
+			{
+				if (gameMatrix[playerOne.line - 1][playerOne.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2 - 1][playerOne.column / 2].x, gameBoardSquareMatrix[playerOne.line / 2 - 1][playerOne.column / 2].y, 35, 35);
+
+				if (gameMatrix[playerOne.line + 1][playerOne.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2 + 1][playerOne.column / 2].x, gameBoardSquareMatrix[playerOne.line / 2 + 1][playerOne.column / 2].y, 35, 35);
+			}
+		}
+		else
+		if (X - moveLeftRight >= p1X_Start - (4 * moveLeftRight) && checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 1 && gameMatrix[player.line][player.column - 1] != -1)
+			addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
+
+
+		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
+		{
+			if (gameMatrix[playerOne.line][playerOne.column + 1] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
+			else
+			{
+				if (gameMatrix[playerOne.line - 1][playerOne.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2 - 1][playerOne.column / 2].x, gameBoardSquareMatrix[playerOne.line / 2 - 1][playerOne.column / 2].y, 35, 35);
+
+				if (gameMatrix[playerOne.line + 1][playerOne.column] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2 + 1][playerOne.column / 2].x, gameBoardSquareMatrix[playerOne.line / 2 + 1][playerOne.column / 2].y, 35, 35);
+			}
+		}
+		else
+		if (X + moveLeftRight <= p1X_Start + (4 * moveLeftRight) && checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 1 && gameMatrix[player.line][player.column + 1] != -1)
+			addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
+
+
+		if (checkPlayerProximity(X, Y + moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start)
+		{
+			if (gameMatrix[playerOne.line + 1][playerOne.column] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
+			else
+			{
+				if (gameMatrix[playerOne.line][playerOne.column - 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 - 1].x, gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 - 1].y, 35, 35);
+				if (gameMatrix[playerOne.line][playerOne.column + 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 + 1].x, gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 + 1].y, 35, 35);
+			}
+		}
+		else
+		if (Y + moveUpDown <= p1Y_Start &&checkPlayerProximity(X, Y + moveUpDown, p1X, p1Y) == 1 && gameMatrix[player.line + 1][player.column] != -1)
+			addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
+
+
+		if (checkPlayerProximity(X, Y - moveUpDown, p1X, p1Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start)
+		{
+			if (gameMatrix[playerOne.line - 1][playerOne.column] != -1)
+				addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
+			else
+			{
+				if (gameMatrix[playerOne.line][playerOne.column - 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 - 1].x, gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 - 1].y, 35, 35);
+				if (gameMatrix[playerOne.line][playerOne.column + 1] != -1)
+					addImageToRenderer("images/highlightedSquare.png", gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 + 1].x, gameBoardSquareMatrix[playerOne.line / 2][playerOne.column / 2 + 1].y, 35, 35);
+			}
+		}
+		else
+		if (Y - moveUpDown >= p2Y_Start && checkPlayerProximity(X, Y - moveUpDown, p1X, p1Y) == 1 && gameMatrix[player.line - 1][player.column] != -1)
+			addImageToRenderer("images/highlightedSquare.PNG", X, Y - moveUpDown, 35, 35);
 	}
 	SDL_RenderPresent(mainRenderer);
 }

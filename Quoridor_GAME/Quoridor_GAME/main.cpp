@@ -23,7 +23,35 @@ int p1X, p1Y, p2X, p2Y;
 short Winner;
 
 short gameMatrix[17][17];
+short auxiliarMatrix[17][17];
+void createAuxiliarMatrix(int i, int j,int position)
+{
 
+	int k, t;
+	for (k = 0; k <= 16;k++)
+	for (t = 0; t <= 16; t++)
+		auxiliarMatrix[k][t] = gameMatrix[k][t];
+	if (position == 1)
+	{
+		auxiliarMatrix[i][j * 2 + 1] = -1;
+		auxiliarMatrix[i + 1][j * 2 + 1] = -1;
+		auxiliarMatrix[i + 2][j * 2 + 1] = -1;
+	}
+	else
+	{
+		auxiliarMatrix[i][j * 2] = -1;
+		auxiliarMatrix[i][j * 2 + 1] = -1;
+		auxiliarMatrix[i][j * 2 + 2] = -1;
+
+	}
+
+}
+struct elements
+{
+	int line;
+	int column;
+
+};
 struct wall {
 	int x;
 	int y;
@@ -47,6 +75,86 @@ struct playerInMatrix{
 };
 
 playerInMatrix playerOne, playerTwo;
+int directionsLine[] = { 1, -1, 0, 0 }, directionsColumn[] = { 0, 0, 1, -1 }, moveForwardLine[] = { 2, -2, 0, 0 }, moveForwardColumns[] = { 0, 0, 2, -2 };
+
+bool checkLimits(int line,int column)
+{
+
+	if (line < 0) return false;
+	if (line >16) return false;
+	if (column < 0) return false;
+	if (column>16) return false;
+	return true;
+}
+	
+
+bool thereIsaRoad(int player)
+{
+	int coada = 1; 
+	bool directions = false;
+	elements coadaElements[100];
+	if (player == 1)
+	{
+		coadaElements[1].line = playerOne.line;
+		coadaElements[1].column = playerOne.column;
+	}
+	if (player == 2)
+	{
+		{
+			coadaElements[1].line = playerTwo.line;
+			coadaElements[1].column = playerTwo.column;
+		}
+	}
+	while (coada != 0)
+	{
+		int i;
+		if (coadaElements[coada].line == 0 && player==1) return true;
+		if (coadaElements[coada].line == 16 && player == 2) return true;
+		auxiliarMatrix[coadaElements[coada].line][coadaElements[coada].column] = 3;
+		directions = false;
+		for (i = 0; i <= 3; i++)
+		if (auxiliarMatrix[coadaElements[coada].line + directionsLine[i]][coadaElements[coada].column + directionsColumn[i]] != -1 && auxiliarMatrix[coadaElements[coada].line + moveForwardLine[i]][coadaElements[coada].column + moveForwardColumns[i]] != 3 && checkLimits(coadaElements[coada].line + moveForwardLine[i],coadaElements[coada].column+moveForwardColumns[i])==true)
+			{
+				coada++;
+				coadaElements[coada].line = coadaElements[coada - 1].line + moveForwardLine[i];
+				coadaElements[coada].column = coadaElements[coada - 1].column + moveForwardColumns[i];
+				i = 4;
+				directions = true;
+			}
+		if (directions == false) coada--;
+	}
+	return false;
+}
+bool thereIsaPathVertical(int i,int j)
+{
+	bool player1HasRoad, player2HasRoad;
+	createAuxiliarMatrix(i, j, 1);
+
+	player1HasRoad = thereIsaRoad(1);
+	createAuxiliarMatrix(i, j, 1);
+	player2HasRoad = thereIsaRoad(2);
+	cout << player1HasRoad << endl;
+	cout << player2HasRoad << endl;
+	
+	if (player1HasRoad == true && player2HasRoad == true) return true;
+	return false;
+}
+bool thereIsaaPathOrizontal(int i, int j)
+{
+	bool player1HasRoad, player2HasRoad;
+	createAuxiliarMatrix(i, j, 2);
+
+	player1HasRoad = thereIsaRoad(1);
+	createAuxiliarMatrix(i, j, 2);
+	player2HasRoad = thereIsaRoad(2);
+
+
+	if (player1HasRoad == true && player2HasRoad == true) return true;
+	return false;
+
+
+}
+
 
 void initializeGameMatrix()
 {
@@ -473,8 +581,9 @@ void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 			{
 				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i,j) && stillHasWalls(playerTurn)){
 					createPlayTable();
-					addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
-					SDL_RenderPresent(mainRenderer);
+				if (thereIsaPathVertical(i,j)==true)	addImageToRenderer("images/pereteVerticalNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
+				else addImageToRenderer("images/pereteNotDrum.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 14, 98);
+				SDL_RenderPresent(mainRenderer);
 					highlightedWalls = 1;
 				}
 			}
@@ -482,8 +591,10 @@ void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 			{
 				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j) && stillHasWalls(playerTurn)){
 					createPlayTable();
+					if (thereIsaaPathOrizontal (i,j)== true)
 					addImageToRenderer("images/pereteNotFilled.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
-					SDL_RenderPresent(mainRenderer);
+				else addImageToRenderer("images/pereteNotDrum.png", wallMatrix[i][j].x, wallMatrix[i][j].y, 98, 14);
+				SDL_RenderPresent(mainRenderer);
 					highlightedWalls = 1;
 				}
 			}
@@ -499,7 +610,7 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 		{
 			if (i % 2 == 0)
 			{
-				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i, j) && stillHasWalls(playerTurn)){
+				if (mouseHoverVerticalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noVerticalWallsAround(i, j) && stillHasWalls(playerTurn) && thereIsaPathVertical(i,j)==1){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
@@ -518,7 +629,7 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 			}
 			else
 			{
-				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j) && stillHasWalls(playerTurn)){
+				if (mouseHoverOrizontalWall(event, wallMatrix[i][j].x, wallMatrix[i][j].y) && noHorizontalWallsAround(i, j) && stillHasWalls(playerTurn) && thereIsaaPathOrizontal(i, j) == 1){
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)

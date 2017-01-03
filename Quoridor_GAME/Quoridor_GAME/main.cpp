@@ -24,6 +24,7 @@ short Winner;
 
 short gameMatrix[17][17];
 short auxiliarMatrix[17][17];
+
 void createAuxiliarMatrix(int i, int j,int position)
 {
 
@@ -46,12 +47,14 @@ void createAuxiliarMatrix(int i, int j,int position)
 	}
 
 }
+
 struct elements
 {
 	int line;
 	int column;
 
 };
+
 struct wall {
 	int x;
 	int y;
@@ -87,7 +90,6 @@ bool checkLimits(int line,int column)
 	return true;
 }
 	
-
 bool thereIsaRoad(int player)
 {
 	int coada = 1; 
@@ -125,6 +127,7 @@ bool thereIsaRoad(int player)
 	}
 	return false;
 }
+
 bool thereIsaPathVertical(int i,int j)
 {
 	bool player1HasRoad, player2HasRoad;
@@ -133,12 +136,11 @@ bool thereIsaPathVertical(int i,int j)
 	player1HasRoad = thereIsaRoad(1);
 	createAuxiliarMatrix(i, j, 1);
 	player2HasRoad = thereIsaRoad(2);
-	cout << player1HasRoad << endl;
-	cout << player2HasRoad << endl;
 	
 	if (player1HasRoad == true && player2HasRoad == true) return true;
 	return false;
 }
+
 bool thereIsaaPathOrizontal(int i, int j)
 {
 	bool player1HasRoad, player2HasRoad;
@@ -154,7 +156,6 @@ bool thereIsaaPathOrizontal(int i, int j)
 
 
 }
-
 
 void initializeGameMatrix()
 {
@@ -325,7 +326,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 {
 	if (playerHighlighter == 1)
 	{
-		if (checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+		if (checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) && gameMatrix[player.line][player.column - 1] != -1)
 		{
 			if (gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
@@ -343,7 +344,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 				addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
 		
 
-		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
+		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) && gameMatrix[player.line][player.column + 1] != -1)
 		{
 			if (gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
@@ -361,7 +362,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 				addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
 		
 
-		if (checkPlayerProximity(X, Y + moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start)
+		if (checkPlayerProximity(X, Y + moveUpDown, p2X, p2Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start && gameMatrix[player.line + 1][player.column] != -1)
 		{
 			if (gameMatrix[playerTwo.line + 1][playerTwo.column] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
@@ -378,7 +379,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 				addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
 		
 
-		if (checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start)
+		if (checkPlayerProximity(X, Y - moveUpDown, p2X, p2Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start && gameMatrix[player.line - 1][player.column] != -1)
 		{
 			if (gameMatrix[playerTwo.line - 1][playerTwo.column] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
@@ -396,7 +397,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 	}
 	if (playerHighlighter == 2)
 	{
-		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight))
+		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) && gameMatrix[player.line][player.column - 1] != -1)
 		{
 			if (gameMatrix[playerOne.line][playerOne.column - 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
@@ -414,7 +415,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 			addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
 
 
-		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight))
+		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) && gameMatrix[player.line][player.column + 1] != -1)
 		{
 			if (gameMatrix[playerOne.line][playerOne.column + 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
@@ -432,7 +433,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 			addImageToRenderer("images/highlightedSquare.PNG", X + moveLeftRight, Y, 35, 35);
 
 
-		if (checkPlayerProximity(X, Y + moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start)
+		if (checkPlayerProximity(X, Y + moveUpDown, p1X, p1Y) == 0 && Y + 2 * moveUpDown <= p1Y_Start && gameMatrix[player.line + 1][player.column] != -1)
 		{
 			if (gameMatrix[playerOne.line + 1][playerOne.column] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X, Y + 2 * moveUpDown, 35, 35);
@@ -449,7 +450,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 			addImageToRenderer("images/highlightedSquare.PNG", X, Y + moveUpDown, 35, 35);
 
 
-		if (checkPlayerProximity(X, Y - moveUpDown, p1X, p1Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start)
+		if (checkPlayerProximity(X, Y - moveUpDown, p1X, p1Y) == 0 && Y - 2 * moveUpDown >= p2Y_Start && gameMatrix[player.line - 1][player.column] != -1)
 		{
 			if (gameMatrix[playerOne.line - 1][playerOne.column] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X, Y - 2 * moveUpDown, 35, 35);
@@ -1221,18 +1222,6 @@ int playingAgainstHuman()
 		while (SDL_PollEvent(&event))
 		{
 			createPlayTable();
-
-			system("cls");
-
-			for (int i = 0; i < 17; i++)
-			{
-				for (int j = 0; j < 17; j++)
-					cout << gameMatrix[i][j] << ' ';
-				cout << '\n';
-			}
-
-			cout << playerOne.line << "  " << playerOne.column << '\n';
-			cout << playerTwo.line << "  " << playerTwo.column << '\n';
 
 			if (playerOneTurn)
 			menuCall=playerOnePlay();

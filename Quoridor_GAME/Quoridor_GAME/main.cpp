@@ -549,29 +549,6 @@ bool stillHasWalls(short playerTurn)
 	return true;
 }
 
-int playingAgainstComputer()
-{
-	SDL_Event event;
-	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
-	while (isRunning)
-		while (SDL_PollEvent(&event))
-		{
-			createPlayTable();
-
-			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
-				return 0;
-
-			if (event.type == SDL_QUIT)
-			{
-				isRunning = false;
-				return 0;
-			}
-		}
-
-	return 0;
-}
-
 void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 {
 	for (int i = 0; i <= 15; i++)
@@ -1229,17 +1206,70 @@ int playingAgainstHuman()
 				menuCall=playerTwoPlay();
 
 			if (menuCall == 0) return 0;
+
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
+
 			if (p1Y == p2Y_Start) { Winner = 1; runPlayerWinTable(Winner); return 0; }
+
 			if (p2Y == p1Y_Start) { Winner = 2; runPlayerWinTable(Winner); return 0; }
+
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;
 				return 0;
 			}
+		}
+	return 0;
+}
 
-			SDL_RenderPresent(mainRenderer);
+int computerPlay()
+{
+	playerOneTurn = true;
+	return 1;
+}
+
+int playingAgainstComputer()
+{
+	SDL_Event event;
+	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
+
+	int menuCall = 1;
+
+	p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+
+	playerOneWalls = 10;
+	playerTwoWalls = 10;
+
+	playerOneTurn = true;
+
+	initializeWallMatrix();
+	initializeGameMatrix();
+
+	while (isRunning)
+		while (SDL_PollEvent(&event))
+		{
+			createPlayTable();
+
+			if (playerOneTurn)
+				menuCall = playerOnePlay();
+			else
+				menuCall = computerPlay();
+
+			if (menuCall == 0) return 0;
+
+			if (p1Y == p2Y_Start) { Winner = 1; runPlayerWinTable(Winner); return 0; }
+
+			if (p2Y == p1Y_Start) { Winner = 2; runPlayerWinTable(Winner); return 0; }
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
+				return 0;
+
+			if (event.type == SDL_QUIT)
+			{
+				isRunning = false;
+				return 0;
+			}
 		}
 	return 0;
 }

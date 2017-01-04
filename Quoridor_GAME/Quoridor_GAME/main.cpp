@@ -281,13 +281,18 @@ void createPlayTable()
 
 	SDL_RenderClear(mainRenderer);
 
-	addImageToRenderer("images/gameBoard.JPG", 0, 0, 800, 600);
+	if (playerOneTurn == true) addImageToRenderer("images/gameBoardPlayer1.PNG", 0, 0, 800, 600);
+	else addImageToRenderer("images/gameBoardPlayer2.PNG", 0, 0, 800, 600);
+	
 	addImageToRenderer("images/backButton.PNG", 700, 550, 70, 40);
 	addImageToRenderer("images/playerOne.PNG", p1X, p1Y, 35, 35);
 	addImageToRenderer("images/playerTwo.PNG", p2X, p2Y, 35, 35);
 
 	short WallLevel1 = p1Y_StartWalls, walls;
+	
+		
 
+	
 	for (walls = 0; walls < playerOneWalls; walls++)
 	{
 		addImageToRenderer("images/pereteNotFilled.PNG", p1X_StartWalls, WallLevel1, WallWidth, WallLength);
@@ -469,37 +474,52 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 	SDL_RenderPresent(mainRenderer);
 }
 
-void createPlayerWinTable(SDL_Event event, int Winner)
+void createPlayerWinTable( int Winner)
 {
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
 	SDL_RenderClear(mainRenderer);
 	if (Winner == 1) addImageToRenderer("images/PlayerOneWin.JPG", 0, 0, 800, 600);
 	if (Winner == 2) addImageToRenderer("images/PlayerTwoWin.JPG", 0, 0, 800, 600);
-	addImageToRenderer("images/backButton.PNG", 700, 550, 70, 40);
-
-	SDL_RenderPresent(mainRenderer);
+	
 }
 
 int runPlayerWinTable(int Winner)
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
+	createPlayerWinTable( Winner);
+	SDL_RenderPresent(mainRenderer);
 	while (isRunning)
 	while (SDL_PollEvent(&event))
 	{
-		createPlayerWinTable(event,Winner);
+		createPlayerWinTable(Winner);
+		cout << event.motion.x << endl;
+		cout << event.motion.y << endl;
+		if (event.motion.x >= 72 && event.motion.y >= 499 && event.motion.x <= 330 && event.motion.y <= 544)
+		{
+			if (Winner == 1) addImageToRenderer("images/PlayerOneWinMenuHighlighted.JPG", 0, 0, 800, 600);
+			if (Winner == 2) addImageToRenderer("images/PlayerTwoWinMenuHighlighted.JPG", 0, 0, 800, 600);
 
-		if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
+
+		}
+		if (event.motion.x >= 461 && event.motion.y >= 498 && event.motion.x <= 727 && event.motion.y <= 551)
+			{
+				if (Winner == 1) addImageToRenderer("images/PlayerOneWinAgainHighlighted.JPG", 0, 0, 800, 600);
+				if (Winner == 2) addImageToRenderer("images/PlayerTwoWinAgainHighlighted.JPG", 0, 0, 800, 600);
+				
+			}
+		
+		SDL_RenderPresent(mainRenderer);
+		if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 72 && event.motion.y >= 499 && event.motion.x <= 330 && event.motion.y <= 544)
 			return 0;
+		if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 461 && event.motion.y >= 498 && event.motion.x <= 727 && event.motion.y <= 551)
+			return 1; 
 		if (event.type == SDL_QUIT)
 		{
 			isRunning = false;
 			return 0;
 		}
-		if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
-			return 0;
+		
 	}
 	return 0;
 }
@@ -1182,7 +1202,7 @@ int playingAgainstHuman()
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
+	int playAgain = 0;
 	int menuCall=1;
 
 	p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
@@ -1210,10 +1230,36 @@ int playingAgainstHuman()
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
 
-			if (p1Y == p2Y_Start) { Winner = 1; runPlayerWinTable(Winner); return 0; }
+			if (p1Y == p2Y_Start) 
+			{ Winner = 1; 
+			playAgain=runPlayerWinTable(Winner); 
+			if (playAgain==0) return 0; 
+			if (playAgain == 1)
+			{
+				initializeWallMatrix();
+				initializeGameMatrix();
+				p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+				playerOneWalls = 10;
+				playerTwoWalls = 10;
+				playerOneTurn = true;
+			}
+			}
 
-			if (p2Y == p1Y_Start) { Winner = 2; runPlayerWinTable(Winner); return 0; }
-
+			if (p2Y == p1Y_Start) 
+			{ Winner = 2; 
+			playAgain=runPlayerWinTable(Winner); 
+			if (playAgain == 0) return 0;
+			if (playAgain == 1)
+			{
+				initializeWallMatrix();
+				initializeGameMatrix();
+				p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+				playerOneWalls = 10;
+				playerTwoWalls = 10;
+				playerOneTurn = true;
+			}
+			}
+			
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;
@@ -1326,11 +1372,17 @@ int runStartGameMenu()
 	return 0;
 }
 
-void renderInstructionsMenu(SDL_Event event)
+void renderInstructionsMenu(int page)
 {
 	SDL_RenderClear(mainRenderer);
-
 	addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 800, 600);
+	if (page == 1) addImageToRenderer("images/rulesPage1.PNG", 100, 130, 600, 400);
+	if (page == 2) addImageToRenderer("images/rulesPage2.PNG", 100, 130, 600, 400);
+	if (page == 3) addImageToRenderer("images/rulesPage3.PNG", 100, 130, 600, 400);
+
+
+	if (page!=1)addImageToRenderer("images/RulesLeft.PNG", 0, 250, 100, 100);
+	if (page!=3)addImageToRenderer("images/RulesRight.PNG", 700, 250, 100, 100);
 	addImageToRenderer("images/backButton.PNG", 365, 550, 70, 40);
 
 	SDL_RenderPresent(mainRenderer);
@@ -1340,14 +1392,16 @@ int runInstructionsMenu()
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
+	int page = 1;
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{
-			renderInstructionsMenu(event);
+			renderInstructionsMenu(page);
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
 				return 0;
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 0 && event.motion.y >= 250 && event.motion.x <= 100 && event.motion.y <= 350 && page!=1) page--;
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 700 && event.motion.y >= 250 && event.motion.x <= 800 && event.motion.y <= 350 && page!=3) page++;
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;
@@ -1385,7 +1439,6 @@ int runMainMenu()
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
-
 	while (isRunning)
 		while (SDL_PollEvent(&event))
 		{

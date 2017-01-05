@@ -298,7 +298,44 @@ short drumMinim(playerInMatrix player, short playerNumber)
 
 	if (matriceDrumMinim[player.line][player.column + 2] < -1 && player.column + 4 >= 0 && player.column + 4 <= 16)
 		matriceDrumMinim[player.line][player.column + 4] = 1;
+
+
+	// initializare matrice cu drumuri
+	short ok = 1;
+	while (ok == 1)
+	{
+		for (i = 0; i <= 16; i++)
+		for (j = 0; j <= 16; j++)
+		{
+			if (matriceDrumMinim[i][j] == 0)
+			{
+				if (matriceDrumMinim[i - 2][j] > 0 && i - 2 >= 0)
+					matriceDrumMinim[i][j] = matriceDrumMinim[i - 2][j] + 1;
+				if (matriceDrumMinim[i + 2][j] > 0 && i + 2 <= 16)
+					matriceDrumMinim[i][j] = matriceDrumMinim[i + 2][j] + 1;
+				if (matriceDrumMinim[i][j - 2] > 0 && j - 2 >= 0)
+					matriceDrumMinim[i][j] = matriceDrumMinim[i][j - 2] + 1;
+				if (matriceDrumMinim[i][j + 2] > 0 && j + 2 <= 16)
+					matriceDrumMinim[i][j] = matriceDrumMinim[i][j + 2] + 1;
+				ok = 0;
+			}
+		}
+	}
+
+	// returnarea count-ului pentru drumul minim
+	short count = 100;
+	if (playerNumber == 1)
+	for (j = 0; j <= 16; j++)
+	if (matriceDrumMinim[0][j] < count && matriceDrumMinim[0][j] > 0)
+		count = matriceDrumMinim[0][j];
+	else
+	for (j = 0; j <= 16; j++)
+	if (matriceDrumMinim[16][j] < count && matriceDrumMinim[16][j])
+		count = matriceDrumMinim[16][j];
+
+	return count;
 }
+
 
 
 void addImageToRenderer(const char *file,int x, int y, int w, int h)
@@ -702,7 +739,11 @@ int playerOnePlay()
 
 	int highlighted = 0;
 	int highlightedWalls = 0;
-
+	
+	//........!!!!!!!
+	cout << drumMinim(playerOne, 1);
+	
+	
 	while (!turnOver)
 	{
 		while (SDL_PollEvent(&event))

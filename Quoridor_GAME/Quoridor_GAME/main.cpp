@@ -255,6 +255,52 @@ void initializeWallMatrix()
 	}
 }
 
+
+short drumMinim(playerInMatrix player, short playerNumber)
+{
+	short i, j, playerTableNumber;
+	short matriceDrumMinim[17][17];
+
+	// copii matricea de joc in matricea de drum minim si inlocuiesc numerele 1,2 asociate playerilor 1,2 cu -10 si -20
+	for (i = 0; i <= 16; i++)
+	for (j = 0; j <= 16; j++)
+	{
+		if (gameMatrix[i][j] == 1)
+			matriceDrumMinim[i][j] = -10;
+		else if (gameMatrix[i][j] == 2)
+			matriceDrumMinim[i][j] = -20;
+		else
+			matriceDrumMinim[i][j] = gameMatrix[i][j];
+	}
+
+	// initializez inceputul de drum al player-ului ce joaca in tura cu 1
+	if (matriceDrumMinim[player.line - 2][player.column] == 0 && player.line - 2 >= 0 && player.line - 2 <= 16)
+		matriceDrumMinim[player.line - 2][player.column] = 1;
+
+	if (matriceDrumMinim[player.line + 2][player.column] == 0 && player.line + 2 >= 0 && player.line + 2 <= 16)
+		matriceDrumMinim[player.line + 2][player.column] = 1;
+
+	if (matriceDrumMinim[player.line][player.column - 2] == 0 && player.column - 2 >= 0 && player.column - 2 <= 16)
+		matriceDrumMinim[player.line][player.column - 2] = 1;
+
+	if (matriceDrumMinim[player.line][player.column + 2] == 0 && player.column + 2 >= 0 && player.column + 2 <= 16)
+		matriceDrumMinim[player.line][player.column + 2] = 1;
+
+	// verific daca cei doi playeri sunt unul langa altul si initializez drumul cu 2 peste
+	if (matriceDrumMinim[player.line - 2][player.column] < -1 && player.line - 4 >= 0 && player.line - 4 <= 16)
+		matriceDrumMinim[player.line - 4][player.column] = 1;
+
+	if (matriceDrumMinim[player.line + 2][player.column] < -1 && player.line + 4 >= 0 && player.line + 4 <= 16)
+		matriceDrumMinim[player.line + 4][player.column] = 1;
+
+	if (matriceDrumMinim[player.line][player.column - 2] < -1 && player.column - 4 >= 0 && player.column - 4 <= 16)
+		matriceDrumMinim[player.line][player.column - 4] = 1;
+
+	if (matriceDrumMinim[player.line][player.column + 2] < -1 && player.column + 4 >= 0 && player.column + 4 <= 16)
+		matriceDrumMinim[player.line][player.column + 4] = 1;
+}
+
+
 void addImageToRenderer(const char *file,int x, int y, int w, int h)
 {
 	SDL_Surface *surface;

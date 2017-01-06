@@ -23,6 +23,7 @@ int p1X, p1Y, p2X, p2Y;
 short Winner;
 
 short gameMatrix[17][17];
+short matriceDrumMinim[17][17];
 short auxiliarMatrix[17][17];
 
 void createAuxiliarMatrix(int i, int j,int position)
@@ -255,13 +256,9 @@ void initializeWallMatrix()
 	}
 }
 
-
-short drumMinim(playerInMatrix player, short playerNumber)
+void initializeMatriceDrumMinim()
 {
-	short i, j, playerTableNumber;
-	short matriceDrumMinim[17][17];
-
-	// copii matricea de joc in matricea de drum minim si inlocuiesc numerele 1,2 asociate playerilor 1,2 cu -10 si -20
+	short i, j;
 	for (i = 0; i <= 16; i++)
 	for (j = 0; j <= 16; j++)
 	{
@@ -273,70 +270,88 @@ short drumMinim(playerInMatrix player, short playerNumber)
 			matriceDrumMinim[i][j] = gameMatrix[i][j];
 	}
 
-	// initializez inceputul de drum al player-ului ce joaca in tura cu 1
-	if (matriceDrumMinim[player.line - 2][player.column] == 0 && player.line - 2 >= 0 && player.line - 2 <= 16)
-		matriceDrumMinim[player.line - 2][player.column] = 1;
+}
 
-	if (matriceDrumMinim[player.line + 2][player.column] == 0 && player.line + 2 >= 0 && player.line + 2 <= 16)
-		matriceDrumMinim[player.line + 2][player.column] = 1;
+short drumMinim(playerInMatrix player, short playerNumber)
+{
+	short i, j, playerTableNumber;
+	struct pozitii {
+		short x, y;
+	};
 
-	if (matriceDrumMinim[player.line][player.column - 2] == 0 && player.column - 2 >= 0 && player.column - 2 <= 16)
-		matriceDrumMinim[player.line][player.column - 2] = 1;
+	pozitii coada[100];
 
-	if (matriceDrumMinim[player.line][player.column + 2] == 0 && player.column + 2 >= 0 && player.column + 2 <= 16)
-		matriceDrumMinim[player.line][player.column + 2] = 1;
+	short dirLine[] = { -1, 0, 1, 0 };
+	short dirCol[] = { 0, 1, 0, -1 };
 
-	// verific daca cei doi playeri sunt unul langa altul si initializez drumul cu 2 peste
-	if (matriceDrumMinim[player.line - 2][player.column] < -1 && player.line - 4 >= 0 && player.line - 4 <= 16)
-		matriceDrumMinim[player.line - 4][player.column] = 1;
+	if (playerNumber == 2)
+		matriceDrumMinim[playerOne.line][playerTwo.column] = 0;
+	else matriceDrumMinim[playerTwo.line][playerTwo.column] = 0;
 
-	if (matriceDrumMinim[player.line + 2][player.column] < -1 && player.line + 4 >= 0 && player.line + 4 <= 16)
-		matriceDrumMinim[player.line + 4][player.column] = 1;
+	short elementeCoada = 0, contorCoada = 0;
 
-	if (matriceDrumMinim[player.line][player.column - 2] < -1 && player.column - 4 >= 0 && player.column - 4 <= 16)
-		matriceDrumMinim[player.line][player.column - 4] = 1;
-
-	if (matriceDrumMinim[player.line][player.column + 2] < -1 && player.column + 4 >= 0 && player.column + 4 <= 16)
-		matriceDrumMinim[player.line][player.column + 4] = 1;
-
-
-	// initializare matrice cu drumuri
-	short ok = 1;
-	while (ok == 1)
+	for (i = 0; i < 4; i++)
 	{
-		for (i = 0; i <= 16; i++)
-		for (j = 0; j <= 16; j++)
+		if (player.line + 2 * dirLine[i] >= 0 && player.line + 2 * dirLine[i] <= 16 && player.column + 2 * dirCol[i] >= 0 && player.column + 2 * dirCol[i] <= 16)
 		{
-			if (matriceDrumMinim[i][j] == 0)
+			if (matriceDrumMinim[player.line + dirLine[i]][player.column + dirCol[i]] == 0 && matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 2 * dirCol[i]] == 0)
 			{
-				if (matriceDrumMinim[i - 2][j] > 0 && i - 2 >= 0)
-					matriceDrumMinim[i][j] = matriceDrumMinim[i - 2][j] + 1;
-				if (matriceDrumMinim[i + 2][j] > 0 && i + 2 <= 16)
-					matriceDrumMinim[i][j] = matriceDrumMinim[i + 2][j] + 1;
-				if (matriceDrumMinim[i][j - 2] > 0 && j - 2 >= 0)
-					matriceDrumMinim[i][j] = matriceDrumMinim[i][j - 2] + 1;
-				if (matriceDrumMinim[i][j + 2] > 0 && j + 2 <= 16)
-					matriceDrumMinim[i][j] = matriceDrumMinim[i][j + 2] + 1;
-				ok = 0;
+				matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 2 * dirCol[i]] = 1;
+				coada[elementeCoada].x = player.line + 2 * dirLine[i];
+				coada[elementeCoada].y = player.column + 2 * dirCol[i];
+				elementeCoada++;
 			}
 		}
 	}
+	
+	while (contorCoada < elementeCoada)
+	{
+		for (i = 0; i < 4; i++)
+		{
+			if (coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y + 2 * dirCol[i] >= 0 && coada[contorCoada].y + 2 * dirCol[i] <= 16)
+			{
+				if (matriceDrumMinim[coada[contorCoada].x + dirLine[i]][coada[contorCoada].y + dirCol[i]] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] == 0 || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] > matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y]+1))
+				{
+					matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
+					coada[elementeCoada].x = coada[contorCoada].x + 2 * dirLine[i];
+					coada[elementeCoada].y = coada[contorCoada].y + 2 * dirCol[i];
+					elementeCoada++;
+				}
+			}
+		}
+		contorCoada++;
+	}
 
-	// returnarea count-ului pentru drumul minim
+
+	cout << '\n';
+
+	for (i = 0; i <= 16; i++)
+	{
+		for (j = 0; j <= 16; j++)
+		{
+			cout << matriceDrumMinim[i][j] << ' ';
+		}
+		cout << '\n';
+	}
+
+	cout << '\n';
+
 	short count = 100;
 	if (playerNumber == 1)
-	for (j = 0; j <= 16; j++)
-	if (matriceDrumMinim[0][j] < count && matriceDrumMinim[0][j] > 0)
-		count = matriceDrumMinim[0][j];
-	else
-	for (j = 0; j <= 16; j++)
-	if (matriceDrumMinim[16][j] < count && matriceDrumMinim[16][j])
-		count = matriceDrumMinim[16][j];
+	{
+		for (i = 0; i <= 16; i=i+2)
+		if (matriceDrumMinim[0][i] < count && matriceDrumMinim[0][i]>0)
+				count = matriceDrumMinim[0][i];
+	}
+	else 
+	{
+		for (i = 0; i <= 16; i=i+2)
+		if (matriceDrumMinim[16][i] < count && matriceDrumMinim[16][i]>0)
+			count = matriceDrumMinim[16][i];
+	}
 
 	return count;
 }
-
-
 
 void addImageToRenderer(const char *file,int x, int y, int w, int h)
 {
@@ -742,7 +757,6 @@ int playerOnePlay()
 	
 	//........!!!!!!!
 	cout << drumMinim(playerOne, 1);
-	
 	
 	while (!turnOver)
 	{
@@ -1307,6 +1321,15 @@ int playingAgainstHuman()
 		{
 			createPlayTable();
 
+			system("cls");
+			for (int i = 0; i <= 16; i++)
+			{
+				for (int j = 0; j <= 16; j++)
+					cout << gameMatrix[i][j] << ' ';
+				cout<<endl;
+			}
+
+
 			if (playerOneTurn)
 			menuCall=playerOnePlay();
 			else
@@ -1318,7 +1341,8 @@ int playingAgainstHuman()
 				return 0;
 
 			if (p1Y == p2Y_Start) 
-			{ Winner = 1; 
+			{ 
+			Winner = 1; 
 			playAgain=runPlayerWinTable(Winner); 
 			if (playAgain==0) return 0; 
 			if (playAgain == 1)
@@ -1333,7 +1357,8 @@ int playingAgainstHuman()
 			}
 
 			if (p2Y == p1Y_Start) 
-			{ Winner = 2; 
+			{ 
+			Winner = 2; 
 			playAgain=runPlayerWinTable(Winner); 
 			if (playAgain == 0) return 0;
 			if (playAgain == 1)
@@ -1358,6 +1383,36 @@ int playingAgainstHuman()
 
 int computerPlay()
 {
+	initializeMatriceDrumMinim();
+	
+	short count = 100;
+	short x, y;
+	
+	if (drumMinim(playerTwo, 2) <= drumMinim(playerOne, 1))
+	{
+		short dirLine[] = { -1, 0, 1, 0 };
+		short dirCol[] = { 0, 1, 0, -1 };
+		
+		for (i = 0; i < 4; i++)
+		if (matriceDrumMinim[playerTwo.line + dirLine[i]][playerTwo.column + dirCol[i]] == 0)
+		{
+			matriceDrumMinim[playerTwo.line][playerTwo.column] = 0;
+			matriceDrumMinim[playerTwo.line - 2][playerTwo.column] = 2;
+			if (drumMinim(playerTwo, 2) < count)
+				{
+				count = drumMinim(playerTwo, 2);
+				x = playerTwo.line - 2;
+				y = playerTwo.column;
+				}
+		}
+
+
+	}
+	else
+	{
+
+	}
+
 	playerOneTurn = true;
 	return 1;
 }

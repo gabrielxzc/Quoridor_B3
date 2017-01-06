@@ -1,11 +1,9 @@
-﻿Build started 1/5/2017 9:58:39 AM.
-     1>Project "D:\chestii\FACULTATE\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>d:\chestii\facultate\quoridor\quoridor_game\quoridor_game\main.cpp(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
-     1>Done Building Project "D:\chestii\FACULTATE\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)) -- FAILED.
+﻿Build started 1/6/2017 7:39:38 PM.
+     1>Project "D:\GIT\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         Quoridor_GAME.vcxproj -> D:\GIT\Quoridor\Quoridor_GAME\Debug\Quoridor_GAME.exe
+     1>Done Building Project "D:\GIT\Quoridor\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.51
+Time Elapsed 00:00:00.23

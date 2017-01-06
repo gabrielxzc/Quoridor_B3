@@ -322,20 +322,6 @@ short drumMinim(playerInMatrix player, short playerNumber)
 		contorCoada++;
 	}
 
-
-	cout << '\n';
-
-	for (i = 0; i <= 16; i++)
-	{
-		for (j = 0; j <= 16; j++)
-		{
-			cout << matriceDrumMinim[i][j] << ' ';
-		}
-		cout << '\n';
-	}
-
-	cout << '\n';
-
 	short count = 100;
 	if (playerNumber == 1)
 	{
@@ -754,9 +740,6 @@ int playerOnePlay()
 
 	int highlighted = 0;
 	int highlightedWalls = 0;
-	
-	//........!!!!!!!
-	cout << drumMinim(playerOne, 1);
 	
 	while (!turnOver)
 	{
@@ -1381,36 +1364,78 @@ int playingAgainstHuman()
 	return 0;
 }
 
+void computerMove()
+{
+	short i;
+
+	short line, column;
+	short count = 999;
+
+	short dirLine[] = {-1, 0, 1, 0};
+	short dirCol[] = {0, 1, 0, -1};
+
+	playerInMatrix playerAuxiliar;
+
+	short drumulScurt;
+
+	for (i = 0; i<4; i++)
+	{
+		initializeMatriceDrumMinim();
+		if (matriceDrumMinim[playerTwo.line + dirLine[i]][playerTwo.column + dirCol[i]] == 0)
+		{
+			if (matriceDrumMinim[playerTwo.line + 2 * dirLine[i]][playerTwo.column + 2 * dirCol[i]] == 0)
+			{
+				matriceDrumMinim[playerTwo.line][playerTwo.column] = 0;
+				matriceDrumMinim[playerTwo.line + 2 * dirLine[i]][playerTwo.column + 2 * dirCol[i]] = 2;
+
+				playerAuxiliar.line = playerTwo.line + 2 * dirLine[i];
+				playerAuxiliar.column = playerTwo.column + 2 * dirCol[i];
+
+				drumulScurt = drumMinim(playerAuxiliar, 2);
+
+				if (drumulScurt < count)
+				{
+					count = drumulScurt;
+					line = playerAuxiliar.line;
+					column = playerAuxiliar.column;
+				}
+			}
+		}
+	}
+
+	if (line - playerTwo.line > 0)
+		p2Y = p2Y + moveUpDown;
+	else
+	{
+		if (line - playerTwo.line < 0)
+			p2Y = p2Y - moveUpDown;
+	}
+
+	if (column - playerTwo.column > 0)
+		p2X = p2X + moveLeftRight;
+	else
+	{
+		if (column - playerTwo.column < 0)
+			p2X = p2X - moveLeftRight;
+	}
+
+	gameMatrix[playerTwo.line][playerTwo.column] = 0;
+	gameMatrix[line][column] = 2;
+	playerTwo.line = line;
+	playerTwo.column = column;
+}
+
 int computerPlay()
 {
 	initializeMatriceDrumMinim();
-	
-	short count = 100;
-	short x, y;
-	
-	if (drumMinim(playerTwo, 2) <= drumMinim(playerOne, 1))
+	if (drumMinim(playerOne, 1) > drumMinim(playerTwo, 2))
 	{
-		short dirLine[] = { -1, 0, 1, 0 };
-		short dirCol[] = { 0, 1, 0, -1 };
-		
-		for (i = 0; i < 4; i++)
-		if (matriceDrumMinim[playerTwo.line + dirLine[i]][playerTwo.column + dirCol[i]] == 0)
-		{
-			matriceDrumMinim[playerTwo.line][playerTwo.column] = 0;
-			matriceDrumMinim[playerTwo.line - 2][playerTwo.column] = 2;
-			if (drumMinim(playerTwo, 2) < count)
-				{
-				count = drumMinim(playerTwo, 2);
-				x = playerTwo.line - 2;
-				y = playerTwo.column;
-				}
-		}
-
-
+		computerMove();
+		cout << "moved" << '\n' << '\n';
 	}
 	else
 	{
-
+		// computerPlaceWall();
 	}
 
 	playerOneTurn = true;
@@ -1435,10 +1460,20 @@ int playingAgainstComputer()
 	initializeGameMatrix();
 
 	while (isRunning)
+	{
+		for (int i = 0; i <= 16; i++)
+		{
+			for (int j = 0; j <= 16; j++)
+			{
+				cout << gameMatrix[i][j] << ' ';
+			}
+			cout << endl;
+		}
+
+		cout << '\n' << '\n';
+
 		while (SDL_PollEvent(&event))
 		{
-			createPlayTable();
-
 			if (playerOneTurn)
 				menuCall = playerOnePlay();
 			else
@@ -1459,6 +1494,8 @@ int playingAgainstComputer()
 				return 0;
 			}
 		}
+		createPlayTable();
+	}
 	return 0;
 }
 

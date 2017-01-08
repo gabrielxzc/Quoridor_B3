@@ -372,10 +372,7 @@ void createPlayTable()
 	addImageToRenderer("images/playerTwo.PNG", p2X, p2Y, 35, 35);
 
 	short WallLevel1 = p1Y_StartWalls, walls;
-	
-		
 
-	
 	for (walls = 0; walls < playerOneWalls; walls++)
 	{
 		addImageToRenderer("images/pereteNotFilled.PNG", p1X_StartWalls, WallLevel1, WallWidth, WallLength);
@@ -576,8 +573,6 @@ int runPlayerWinTable(int Winner)
 	while (SDL_PollEvent(&event))
 	{
 		createPlayerWinTable(Winner);
-		cout << event.motion.x << endl;
-		cout << event.motion.y << endl;
 		if (event.motion.x >= 72 && event.motion.y >= 499 && event.motion.x <= 330 && event.motion.y <= 544)
 		{
 			if (Winner == 1) addImageToRenderer("images/PlayerOneWinMenuHighlighted.JPG", 0, 0, 800, 600);
@@ -1463,9 +1458,7 @@ void computerPlaceWall()
 					matriceDrumMinim[i + 2][j] = -1;
 					minPlayerOne = drumMinim(playerOne, 1);
 
-					cout << i << ' ' << j << ' ' << minPlayerOne << ' ' << minPlayerTwo << endl;
-
-					if (minPlayerTwo - minPlayerOne < count)
+					if (minPlayerTwo - minPlayerOne < count && minPlayerTwo!=100 && minPlayerOne!=100)
 					{
 						count = minPlayerTwo - minPlayerOne;
 						line = i;
@@ -1476,7 +1469,7 @@ void computerPlaceWall()
 			}
 			else
 			{
-				if (matriceDrumMinim[i][j] != -1 && matriceDrumMinim[i][j+1] != -1 && matriceDrumMinim[i][j+2] != -1)
+				if (matriceDrumMinim[i][j] != -1 && matriceDrumMinim[i][j + 1] != -1 && matriceDrumMinim[i][j + 2] != -1)
 				{
 					initializeMatriceDrumMinim();
 					matriceDrumMinim[i][j] = -1;
@@ -1490,9 +1483,7 @@ void computerPlaceWall()
 					matriceDrumMinim[i][j + 2] = -1;
 					minPlayerOne = drumMinim(playerOne, 1);
 
-					cout << i << ' ' << j <<' '<< minPlayerOne << ' ' << minPlayerTwo << endl;
-
-					if (minPlayerTwo - minPlayerOne < count)
+					if (minPlayerTwo - minPlayerOne < count && minPlayerTwo != 100 && minPlayerOne != 100)
 					{
 						count = minPlayerTwo - minPlayerOne;
 						line = i;
@@ -1503,8 +1494,6 @@ void computerPlaceWall()
 			}
 		}
 	}
-
-	cout << endl << line << ' ' << column << endl;
 
 	if (count == drumInitial)
 	{

@@ -287,8 +287,8 @@ short drumMinim(playerInMatrix player, short playerNumber)
 		short x, y;
 	};
 
-	pozitii coada[1000];
-
+	pozitii coada[2000];
+	bool checkedOtherplayer=false;
 	short dirLine[] = { -1, 0, 1, 0 };
 	short dirCol[] = { 0, 1, 0, -1 };
 
@@ -310,35 +310,66 @@ short drumMinim(playerInMatrix player, short playerNumber)
 			if (matriceDrumMinim[player.line + dirLine[i]][player.column + dirCol[i]] == 0 && matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 2 * dirCol[i]] == -10 || -matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 2 * dirCol[i]] == -20)
 			{
 
+
 				if (matriceDrumMinim[player.line + 3 * dirLine[i]][player.column + 3 * dirCol[i]] == -1)
 				{
-					if (dirLine[i] == 0)
+					if (dirLine[i])
 					{
-						matriceDrumMinim[player.line + 2][player.column + 2 * dirCol[i]] = 1;
-						coada[elementeCoada].x = player.line + 2;
-						coada[elementeCoada].y = player.column + 2 * dirCol[i];
-						elementeCoada++;
-						matriceDrumMinim[player.line - 2][player.column + 2 * dirCol[i]] = 1;
-						coada[elementeCoada].x = player.line - 2;
-						coada[elementeCoada].y = player.column + 2 * dirCol[i];
-						elementeCoada++;
+						if (matriceDrumMinim[player.line + 1][player.column + 2 * dirCol[i]] == 0 && player.line + 2 <= 16 && player.line + 2 >= 0 && player.column + 2 * dirCol[i] <= 16 && player.column + 2 * dirCol[i] >= 0)
+						{
+							matriceDrumMinim[player.line + 2][player.column + 2 * dirCol[i]] = 1;
+							coada[elementeCoada].x = player.line + 2;
+							coada[elementeCoada].y = player.column + 2 * dirCol[i];
+							elementeCoada++;
+						}
+						if (matriceDrumMinim[player.line - 1][player.column + 2 * dirCol[i]] == 0 && player.line - 2 <= 16 && player.line - 2 >= 0 && player.column + 2 * dirCol[i] <= 16 && player.column + 2 * dirCol[i] >= 0)
+						{
+							matriceDrumMinim[player.line - 2][player.column + 2 * dirCol[i]] = 1;
+							coada[elementeCoada].x = player.line - 2;
+							coada[elementeCoada].y = player.column + 2 * dirCol[i];
+							elementeCoada++;
+						}
 					}
 					else
 					{
-						matriceDrumMinim[player.line + dirLine[i]][player.column + 2] = 1;
-						coada[elementeCoada].x = player.line + dirLine[i];
-						coada[elementeCoada].y = player.column + 2;
-						elementeCoada++;
-						matriceDrumMinim[player.line + dirLine[i]][player.column - 2] = 1;
-						coada[elementeCoada].x = player.line + dirLine[i];
-						coada[elementeCoada].y = player.column - 2;
-						elementeCoada++;
-
+						if (matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 1] == 0 && player.line + 2 * dirLine[i] <= 16 && player.line + 2 * dirLine[i] >= 0 && player.column + 2 <= 16 && player.column + 2 >= 0)
+						{
+							matriceDrumMinim[player.line + dirLine[i]][player.column + 2] = 1;
+							coada[elementeCoada].x = player.line + dirLine[i];
+							coada[elementeCoada].y = player.column + 2;
+							elementeCoada++;
+						}
+						if (matriceDrumMinim[player.line + 2 * dirLine[i]][player.column - 1] == 0 && player.line + 2 * dirLine[i] <= 16 && player.line + 2 * dirLine[i] >= 0 && player.column - 2 <= 16 && player.column - 2 >= 0)
+						{
+							matriceDrumMinim[player.line + dirLine[i]][player.column - 2] = 1;
+							coada[elementeCoada].x = player.line + dirLine[i];
+							coada[elementeCoada].y = player.column - 2;
+							elementeCoada++;
+						}
 
 
 					}
 
 
+
+					if (((coada[contorCoada].x + 3 * dirLine[i] > 16 && playerNumber == 2) || (coada[contorCoada].x - 3 * dirLine[i] < 0 && playerNumber == 1)) && checkedOtherplayer == false)
+					{
+						checkedOtherplayer = true;
+						if (matriceDrumMinim[player.line + 2 * dirLine[i]][player.column + 1] == 0 && player.line + 2 * dirLine[i] <= 16 && player.line + 2 * dirLine[i] >= 0 && player.column + 2 <= 16 && player.column + 2 >= 0)
+						{
+							matriceDrumMinim[player.line + dirLine[i]][player.column + 2] = 1;
+							coada[elementeCoada].x = player.line + dirLine[i];
+							coada[elementeCoada].y = player.column + 2;
+							elementeCoada++;
+						}
+						if (matriceDrumMinim[player.line + 2 * dirLine[i]][player.column - 1] == 0 && player.line + 2 * dirLine[i] <= 16 && player.line + 2 * dirLine[i] >= 0 && player.column - 2 <= 16 && player.column - 2 >= 0)
+						{
+							matriceDrumMinim[player.line + dirLine[i]][player.column - 2] = 1;
+							coada[elementeCoada].x = player.line + dirLine[i];
+							coada[elementeCoada].y = player.column - 2;
+							elementeCoada++;
+						}
+					}
 				}
 
 
@@ -375,20 +406,40 @@ short drumMinim(playerInMatrix player, short playerNumber)
 
 				if (matriceDrumMinim[coada[contorCoada].x + dirLine[i]][coada[contorCoada].y + dirCol[i]] == 0 && matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] == -10 || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] == -20)
 				{
-
-					if (matriceDrumMinim[coada[contorCoada].x + 3 * dirLine[i]][coada[contorCoada].y + 3 * dirCol[i]] == -1)
+					if (((coada[contorCoada].x + 3 * dirLine[i] > 16 && playerNumber == 2) || (coada[contorCoada].x - 3 * dirLine[i] < 0 && playerNumber == 1)) && checkedOtherplayer==false)
 					{
-						matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2 * dirCol[i]] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
+						checkedOtherplayer = true;
+						if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 1] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 1] || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2]>matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y + 2 >= 0 && coada[contorCoada].y + 2 <= 16)
+						{
+							matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
+							coada[elementeCoada].x = coada[contorCoada].x + 2 * dirLine[i];
+							coada[elementeCoada].y = coada[contorCoada].y + 2;
+							elementeCoada++;
+						}
+						if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 1] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2]==0 || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2]> matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y - 2 >= 0 && coada[contorCoada].y - 2 <= 16)
+						{
+							matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
+							coada[elementeCoada].x = coada[contorCoada].x + 2 * dirLine[i];
+							coada[elementeCoada].y = coada[contorCoada].y - 2;
+							elementeCoada++;
+						}
+
+
+					}
+
+					if (matriceDrumMinim[coada[contorCoada].x + 3 * dirLine[i]][coada[contorCoada].y + 3 * dirCol[i]] == -1 )
+					{
+						
 						if (dirCol[i] == 0)
 						{
-							if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 1] == 0 && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y + 2 >= 0 && coada[contorCoada].y + 2 <= 16)
+							if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 1] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2]==0 || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2]>matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y + 2 >= 0 && coada[contorCoada].y + 2 <= 16)
 							{
 								matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y + 2] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
 								coada[elementeCoada].x = coada[contorCoada].x + 2 * dirLine[i];
 								coada[elementeCoada].y = coada[contorCoada].y + 2;
 								elementeCoada++;
 							}
-							if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 1] == 0 && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y - 2 >= 0 && coada[contorCoada].y - 2 <= 16)
+							if (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 1] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2]==0 || matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2]> matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x + 2 * dirLine[i] >= 0 && coada[contorCoada].x + 2 * dirLine[i] <= 16 && coada[contorCoada].y - 2 >= 0 && coada[contorCoada].y - 2 <= 16)
 							{
 								matriceDrumMinim[coada[contorCoada].x + 2 * dirLine[i]][coada[contorCoada].y - 2] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
 								coada[elementeCoada].x = coada[contorCoada].x + 2 * dirLine[i];
@@ -398,14 +449,14 @@ short drumMinim(playerInMatrix player, short playerNumber)
 						}
 						if (dirLine[i] == 0)
 						{
-							if (matriceDrumMinim[coada[contorCoada].x + 1][coada[contorCoada].y + 2 * dirCol[i]] == 0 && coada[contorCoada].x + 2 >= 0 && coada[contorCoada].x + 2 <= 16 && coada[contorCoada].y + 2 * dirCol[i] >= 0 && coada[contorCoada].y + 2 * dirCol[i] <= 16)
+							if (matriceDrumMinim[coada[contorCoada].x + 1][coada[contorCoada].y + 2 * dirCol[i]] == 0 && (matriceDrumMinim[coada[contorCoada].x + 2][coada[contorCoada].y + 2 * dirCol[i]]==0 || matriceDrumMinim[coada[contorCoada].x + 2][coada[contorCoada].y + 2 * dirCol[i]]>matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x + 2 >= 0 && coada[contorCoada].x + 2 <= 16 && coada[contorCoada].y + 2 * dirCol[i] >= 0 && coada[contorCoada].y + 2 * dirCol[i] <= 16)
 							{
 								matriceDrumMinim[coada[contorCoada].x + 2][coada[contorCoada].y + 2 * dirCol[i]] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
 								coada[elementeCoada].x = coada[contorCoada].x + 2;
 								coada[elementeCoada].y = coada[contorCoada].y + 2 * dirCol[i];
 								elementeCoada++;
 							}
-							if (matriceDrumMinim[coada[contorCoada].x - 1][coada[contorCoada].y + 2 * dirCol[i]] == 0 && coada[contorCoada].x - 2 >= 0 && coada[contorCoada].x - 2 <= 16 && coada[contorCoada].y + 2 * dirCol[i] >= 0 && coada[contorCoada].y + 2 * dirCol[i] <= 16)
+							if (matriceDrumMinim[coada[contorCoada].x - 1][coada[contorCoada].y + 2 * dirCol[i]] == 0 && (matriceDrumMinim[coada[contorCoada].x - 2][coada[contorCoada].y + 2 * dirCol[i]]==0  || matriceDrumMinim[coada[contorCoada].x - 2][coada[contorCoada].y + 2 * dirCol[i]]>matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1) && coada[contorCoada].x - 2 >= 0 && coada[contorCoada].x - 2 <= 16 && coada[contorCoada].y + 2 * dirCol[i] >= 0 && coada[contorCoada].y + 2 * dirCol[i] <= 16)
 							{
 								matriceDrumMinim[coada[contorCoada].x - 2][coada[contorCoada].y + 2 * dirCol[i]] = matriceDrumMinim[coada[contorCoada].x][coada[contorCoada].y] + 1;
 								coada[elementeCoada].x = coada[contorCoada].x - 2;
@@ -432,6 +483,7 @@ short drumMinim(playerInMatrix player, short playerNumber)
 				}
 			}
 		}
+		
 		contorCoada++;
 	}
 
@@ -439,6 +491,7 @@ short drumMinim(playerInMatrix player, short playerNumber)
 	if (playerNumber == 1)
 	{
 		for (i = 0; i <= 16; i = i + 2)
+
 		if (matriceDrumMinim[0][i] < count && matriceDrumMinim[0][i]>0)
 			count = matriceDrumMinim[0][i];
 	}
@@ -1415,7 +1468,7 @@ int playingAgainstHuman()
 			if (playerOneTurn)
 			menuCall=playerOnePlay();
 			else
-				menuCall=playerTwoPlay();
+			menuCall=playerTwoPlay();
 
 			if (menuCall == 0) return 0;
 
@@ -1536,7 +1589,7 @@ void computerMove()
 					}
 					else
 					{
-						if (matriceDrumMinim[playerTwo.line + 3 * dirLine[i]][playerTwo.column + 3 * dirCol[i]] == -1)
+						if (matriceDrumMinim[playerTwo.line + 3 * dirLine[i]][playerTwo.column + 3 * dirCol[i]] == -1 || playerTwo.line + 3 * dirLine[i]>16)
 						{
 							if (dirCol[i] == 0)
 							{
@@ -1794,7 +1847,7 @@ int computerPlay()
 
 	initializeMatriceDrumMinim();
 	short minPlayerTwo = drumMinim(playerTwo, 2);
-	
+	cout << minPlayerOne << ' ' << minPlayerTwo << endl;
 	if (minPlayerOne >= minPlayerTwo)
 	{
 		computerMove();
@@ -2044,3 +2097,4 @@ int main(int argc, char* argv[])
 	SDL_Quit();
 	return 0;
 }
+

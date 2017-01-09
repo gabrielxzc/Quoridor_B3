@@ -1,3 +1,9 @@
+#pragma once
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+
 #define p1X_Start 382
 #define p1Y_Start 504
 #define p2X_Start 382

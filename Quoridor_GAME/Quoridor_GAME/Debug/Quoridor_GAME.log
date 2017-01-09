@@ -1,17 +1,26 @@
-﻿Build started 09.01.2017 14:39:52.
-     1>Project "C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
+﻿Build started 1/9/2017 11:46:01 PM.
+     1>Project "E:\GIT\Quoridor_B3\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt auxiliaries.cpp logistics.cpp main.cpp renderers.cpp
          main.cpp
-     1>c:\users\chircan\documents\proiect\quoridor_game\quoridor_game\main.cpp(285): warning C4101: 'playerTableNumber' : unreferenced local variable
-     1>c:\users\chircan\documents\proiect\quoridor_game\quoridor_game\main.cpp(285): warning C4101: 'j' : unreferenced local variable
-     1>c:\users\chircan\documents\proiect\quoridor_game\quoridor_game\main.cpp(1171): warning C4715: 'playerOnePlay' : not all control paths return a value
-     1>c:\users\chircan\documents\proiect\quoridor_game\quoridor_game\main.cpp(1444): warning C4715: 'playerTwoPlay' : not all control paths return a value
+         logistics.cpp
+     1>e:\git\quoridor_b3\quoridor_game\quoridor_game\logistics.cpp(99): warning C4101: 'j' : unreferenced local variable
+         auxiliaries.cpp
+         Generating Code...
+     1>e:\git\quoridor_b3\quoridor_game\quoridor_game\main.cpp(359): warning C4715: 'playerOnePlay' : not all control paths return a value
+     1>e:\git\quoridor_b3\quoridor_game\quoridor_game\main.cpp(665): warning C4715: 'playerTwoPlay' : not all control paths return a value
+         Compiling...
+         renderers.cpp
+         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Debug\Quoridor_GAME.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Debug\Quoridor_GAME.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Debug\Quoridor_GAME.lib" /MACHINE:X86 Debug\main.obj
-         Quoridor_GAME.vcxproj -> C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Debug\Quoridor_GAME.exe
-     1>Done Building Project "C:\Users\Chircan\Documents\Proiect\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.exe" /INCREMENTAL /NOLOGO SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.lib" /MACHINE:X86 Debug\auxiliaries.obj
+         Debug\logistics.obj
+         Debug\main.obj
+         Debug\renderers.obj
+         Debug\variables.obj
+         Quoridor_GAME.vcxproj -> E:\GIT\Quoridor_B3\Quoridor_GAME\Debug\Quoridor_GAME.exe
+     1>Done Building Project "E:\GIT\Quoridor_B3\Quoridor_GAME\Quoridor_GAME\Quoridor_GAME.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.96
+Time Elapsed 00:00:01.12

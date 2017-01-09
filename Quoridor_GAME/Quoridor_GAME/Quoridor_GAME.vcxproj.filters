@@ -18,9 +18,33 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="variables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="auxiliaries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="auxiliaries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

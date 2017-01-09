@@ -69,10 +69,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="auxiliaries.cpp" />
+    <ClCompile Include="logistics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="renderers.cpp" />
+    <ClCompile Include="variables.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="auxiliaries.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="logistics.h" />
+    <ClInclude Include="renderers.h" />
+    <ClInclude Include="variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -25,3 +25,5 @@ short Winner;
 short gameMatrix[17][17];
 short matriceDrumMinim[17][17];
 short auxiliarMatrix[17][17];
+
+bool chooseWhoStarts;

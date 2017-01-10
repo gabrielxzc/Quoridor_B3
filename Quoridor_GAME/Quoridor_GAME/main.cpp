@@ -53,7 +53,7 @@ int runPlayerWinTable(int Winner)
 	return 0;
 }
 
-int playingAgainstHuman()
+int playingAgainstPlayer()
 {
 	SDL_Event event;
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
@@ -65,64 +65,82 @@ int playingAgainstHuman()
 	playerOneWalls = 10;
 	playerTwoWalls = 10;
 
-	playerOneTurn = true;
-
 	initializeWallMatrix();
 	initializeGameMatrix();
 
+	chooseWhoStarts = false;
+
 	while (isRunning)
+	{
+		renderPlayTable();
+
 		while (SDL_PollEvent(&event))
 		{
-			renderPlayTable();
-
-			if (playerOneTurn)
-			menuCall=playerOnePlay();
+			if (chooseWhoStarts == false)
+			{
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 297 && event.motion.x < 397 && event.motion.y > 288 && event.motion.y < 318)
+				{
+					playerOneTurn = true;
+					chooseWhoStarts = true;
+				}
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 405 && event.motion.x < 505 && event.motion.y > 288 && event.motion.y < 318)
+				{
+					playerOneTurn = false;
+					chooseWhoStarts = true;
+				}
+			}
 			else
-			menuCall=playerTwoPlay();
+			{
+				if (playerOneTurn)
+					menuCall = playerOnePlay();
+				else
+					menuCall = playerTwoPlay();
 
-			if (menuCall == 0) return 0;
+				if (menuCall == 0) return 0;
+
+				if (p1Y == p2Y_Start)
+				{
+					Winner = 1;
+					playAgain = runPlayerWinTable(Winner);
+					if (playAgain == 0) return 0;
+					if (playAgain == 1)
+					{
+						initializeWallMatrix();
+						initializeGameMatrix();
+						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+						playerOneWalls = 10;
+						playerTwoWalls = 10;
+						chooseWhoStarts = false;
+					}
+				}
+
+				if (p2Y == p1Y_Start)
+				{
+					Winner = 2;
+					playAgain = runPlayerWinTable(Winner);
+					if (playAgain == 0) return 0;
+					if (playAgain == 1)
+					{
+						initializeWallMatrix();
+						initializeGameMatrix();
+						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+						playerOneWalls = 10;
+						playerTwoWalls = 10;
+						chooseWhoStarts = false;
+					}
+				}
+			}
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
 
-			if (p1Y == p2Y_Start)
-			{
-				Winner = 1;
-				playAgain = runPlayerWinTable(Winner);
-				if (playAgain == 0) return 0;
-				if (playAgain == 1)
-				{
-					initializeWallMatrix();
-					initializeGameMatrix();
-					p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
-					playerOneWalls = 10;
-					playerTwoWalls = 10;
-					playerOneTurn = true;
-				}
-			}
-
-			if (p2Y == p1Y_Start)
-			{
-				Winner = 2;
-				playAgain = runPlayerWinTable(Winner);
-				if (playAgain == 0) return 0;
-				if (playAgain == 1)
-				{
-					initializeWallMatrix();
-					initializeGameMatrix();
-					p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
-					playerOneWalls = 10;
-					playerTwoWalls = 10;
-					playerOneTurn = true;
-				}
-			}
-			
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;
 				return 0;
 			}
 		}
+	}
 	return 0;
 }
 
@@ -138,56 +156,74 @@ int playingAgainstComputer()
 	playerOneWalls = 10;
 	playerTwoWalls = 10;
 
-	playerOneTurn = true;
-
 	initializeWallMatrix();
 	initializeGameMatrix();
 
+	chooseWhoStarts = false;
+
 	while (isRunning)
 	{
+		renderPlayTable();
+
 		while (SDL_PollEvent(&event))
 		{
-			if (playerOneTurn)
-				menuCall = playerOnePlay();
+			if (chooseWhoStarts == false)
+			{
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 297 && event.motion.x < 397 && event.motion.y > 288 && event.motion.y < 318)
+				{
+					playerOneTurn = true;
+					chooseWhoStarts = true;
+				}
+				if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 405 && event.motion.x < 505 && event.motion.y > 288 && event.motion.y < 318)
+				{
+					playerOneTurn = false;
+					chooseWhoStarts = true;
+				}
+			}
 			else
-				menuCall = computerPlay();
+			{
+				if (playerOneTurn)
+					menuCall = playerOnePlay();
+				else
+					menuCall = computerPlay();
 
-			if (menuCall == 0) return 0;
+				if (menuCall == 0) return 0;
+
+				if (p1Y == p2Y_Start)
+				{
+					Winner = 1;
+					playAgain = runPlayerWinTable(Winner);
+					if (playAgain == 0) return 0;
+					if (playAgain == 1)
+					{
+						initializeWallMatrix();
+						initializeGameMatrix();
+						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+						playerOneWalls = 10;
+						playerTwoWalls = 10;
+						chooseWhoStarts = false;
+					}
+				}
+
+				if (p2Y == p1Y_Start)
+				{
+					Winner = 2;
+					playAgain = runPlayerWinTable(Winner);
+					if (playAgain == 0) return 0;
+					if (playAgain == 1)
+					{
+						initializeWallMatrix();
+						initializeGameMatrix();
+						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
+						playerOneWalls = 10;
+						playerTwoWalls = 10;
+						chooseWhoStarts = false;
+					}
+				}
+			}
 
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
-
-			if (p1Y == p2Y_Start)
-			{
-				Winner = 1;
-				playAgain = runPlayerWinTable(Winner);
-				if (playAgain == 0) return 0;
-				if (playAgain == 1)
-				{
-					initializeWallMatrix();
-					initializeGameMatrix();
-					p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
-					playerOneWalls = 10;
-					playerTwoWalls = 10;
-					playerOneTurn = true;
-				}
-			}
-
-			if (p2Y == p1Y_Start)
-			{
-				Winner = 2;
-				playAgain = runPlayerWinTable(Winner);
-				if (playAgain == 0) return 0;
-				if (playAgain == 1)
-				{
-					initializeWallMatrix();
-					initializeGameMatrix();
-					p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
-					playerOneWalls = 10;
-					playerTwoWalls = 10;
-					playerOneTurn = true;
-				}
-			}
 
 			if (event.type == SDL_QUIT)
 			{
@@ -195,7 +231,6 @@ int playingAgainstComputer()
 				return 0;
 			}
 		}
-		renderPlayTable();
 	}
 	return 0;
 }
@@ -217,7 +252,7 @@ int runStartGameMenu()
 			}
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 405 && event.motion.x < 705 && event.motion.y > 125 && event.motion.y < 525) 
 			{
-				playingAgainstHuman();
+				playingAgainstPlayer();
 				return 0;
 			}
 			if ((event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590)) || event.key.keysym.sym == SDLK_ESCAPE)

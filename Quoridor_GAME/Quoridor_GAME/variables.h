@@ -52,3 +52,5 @@ extern short Winner;
 extern short gameMatrix[17][17];
 extern short matriceDrumMinim[17][17];
 extern short auxiliarMatrix[17][17];
+
+extern bool chooseWhoStarts;

@@ -312,6 +312,12 @@ void renderPlayTable()
 			}
 		}
 	}
+	if (chooseWhoStarts == false)
+	{
+		addImageToRenderer("images/chooseWhoStartsButton.png", 250, 220, 300, 120);
+		addImageToRenderer("images/chooseRed.png", 297, 288, 100, 30);
+		addImageToRenderer("images/chooseGreen.png", 405, 288, 100, 30);
+	}
 
 	SDL_RenderPresent(mainRenderer);
 }

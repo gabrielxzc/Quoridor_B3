@@ -1,4 +1,5 @@
 #pragma once
+
 #include "defines.h"
 #include "variables.h"
 #include "auxiliaries.h"
@@ -14,4 +15,4 @@ bool mouseHoverOrizontalWall(SDL_Event event, int x, int y);
 bool thereIsaaPathOrizontal(int i, int j);
 bool thereIsaPathVertical(int i, int j);
 bool thereIsaRoad(int player);
-bool checkLimits(int line, int column);
+bool inMatrix(int line, int column);

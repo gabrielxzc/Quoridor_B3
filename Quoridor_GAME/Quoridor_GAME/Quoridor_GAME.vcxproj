@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -70,15 +70,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="auxiliaries.cpp" />
+    <ClCompile Include="computerPlay.cpp" />
     <ClCompile Include="logistics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="playerPlay.cpp" />
     <ClCompile Include="renderers.cpp" />
     <ClCompile Include="variables.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auxiliaries.h" />
+    <ClInclude Include="computerPlay.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="logistics.h" />
+    <ClInclude Include="playerPlay.h" />
     <ClInclude Include="renderers.h" />
     <ClInclude Include="variables.h" />
   </ItemGroup>

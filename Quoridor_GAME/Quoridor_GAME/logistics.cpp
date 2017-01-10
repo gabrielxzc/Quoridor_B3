@@ -325,7 +325,7 @@ bool mouseHoverOrizontalWall(SDL_Event event, int x, int y)
 		return true;
 	return false;
 }
-bool checkLimits(int line, int column)
+bool inMatrix(int line, int column)
 {
 
 	if (line < 0) return false;
@@ -359,7 +359,7 @@ bool thereIsaRoad(int player)
 		auxiliarMatrix[coadaElements[coada].line][coadaElements[coada].column] = 3;
 		directions = false;
 		for (i = 0; i <= 3; i++)
-		if (auxiliarMatrix[coadaElements[coada].line + directionsLine[i]][coadaElements[coada].column + directionsColumn[i]] != -1 && auxiliarMatrix[coadaElements[coada].line + moveForwardLine[i]][coadaElements[coada].column + moveForwardColumns[i]] != 3 && checkLimits(coadaElements[coada].line + moveForwardLine[i], coadaElements[coada].column + moveForwardColumns[i]) == true)
+		if (auxiliarMatrix[coadaElements[coada].line + directionsLine[i]][coadaElements[coada].column + directionsColumn[i]] != -1 && auxiliarMatrix[coadaElements[coada].line + moveForwardLine[i]][coadaElements[coada].column + moveForwardColumns[i]] != 3 && inMatrix(coadaElements[coada].line + moveForwardLine[i], coadaElements[coada].column + moveForwardColumns[i]) == true)
 		{
 			coada++;
 			coadaElements[coada].line = coadaElements[coada - 1].line + moveForwardLine[i];

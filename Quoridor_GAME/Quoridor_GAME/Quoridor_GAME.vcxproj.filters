@@ -30,6 +30,12 @@
     <ClCompile Include="auxiliaries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="computerPlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="playerPlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
@@ -45,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="auxiliaries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="computerPlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playerPlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

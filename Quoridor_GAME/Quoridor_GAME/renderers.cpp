@@ -13,6 +13,7 @@ void addImageToRenderer(const char *file, int x, int y, int w, int h)
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
 }
+
 void renderMainMenu(SDL_Event event)
 {
 	SDL_RenderClear(mainRenderer);
@@ -36,6 +37,7 @@ void renderMainMenu(SDL_Event event)
 
 	SDL_RenderPresent(mainRenderer);
 }
+
 void renderInstructionsMenu(int page)
 {
 	SDL_RenderClear(mainRenderer);
@@ -51,6 +53,7 @@ void renderInstructionsMenu(int page)
 
 	SDL_RenderPresent(mainRenderer);
 }
+
 void renderStartGameMenu(SDL_Event event)
 {
 	SDL_RenderClear(mainRenderer);
@@ -70,6 +73,7 @@ void renderStartGameMenu(SDL_Event event)
 
 	SDL_RenderPresent(mainRenderer);
 }
+
 void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 {
 	for (int i = 0; i <= 15; i++)
@@ -100,6 +104,7 @@ void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn)
 		}
 	}
 }
+
 void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighlighter)
 {
 	if (playerHighlighter == 1)
@@ -261,6 +266,7 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 	}
 	SDL_RenderPresent(mainRenderer);
 }
+
 void renderPlayTable()
 {
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);
@@ -309,6 +315,7 @@ void renderPlayTable()
 
 	SDL_RenderPresent(mainRenderer);
 }
+
 void renderPlayerWinTable(int Winner)
 {
 	SDL_SetRenderDrawColor(mainRenderer, 255, 255, 255, 255);

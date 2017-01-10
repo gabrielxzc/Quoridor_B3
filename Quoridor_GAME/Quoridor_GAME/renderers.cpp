@@ -1,5 +1,27 @@
 #include "renderers.h"
 
+void addTextToRenderer(char *font_path, int font_size, char *message_text, int x, int y, SDL_Color &color)
+{
+	TTF_Font *font = nullptr;
+	SDL_Surface *textSurface = nullptr;
+	SDL_Texture *textTexture = nullptr;
+	SDL_Rect textRect;
+
+	font = TTF_OpenFont(font_path, font_size);
+	textSurface = TTF_RenderText_Solid(font, message_text, color);
+	textTexture = SDL_CreateTextureFromSurface(mainRenderer, textSurface);
+
+	textRect.x = x;
+	textRect.y = y;
+
+	SDL_QueryTexture(textTexture, nullptr, nullptr, &textRect.w, &textRect.h);
+
+	SDL_RenderCopy(mainRenderer, textTexture, nullptr, &textRect);
+
+	SDL_FreeSurface(textSurface);
+	SDL_DestroyTexture(textTexture);
+}
+
 void addImageToRenderer(const char *file, int x, int y, int w, int h)
 {
 	SDL_Surface *surface;
@@ -312,12 +334,18 @@ void renderPlayTable()
 			}
 		}
 	}
+
 	if (chooseWhoStarts == false)
 	{
 		addImageToRenderer("images/chooseWhoStartsButton.png", 250, 220, 300, 120);
 		addImageToRenderer("images/chooseRed.png", 297, 288, 100, 30);
 		addImageToRenderer("images/chooseGreen.png", 405, 288, 100, 30);
 	}
+
+	SDL_Color grey = {40, 40, 40, 255};
+
+	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerOneScoreC, 117, 552, grey);
+	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerTwoScoreC, 667, -10, grey);
 
 	SDL_RenderPresent(mainRenderer);
 }

@@ -3,7 +3,7 @@
 #include "variables.h"
 #include "logistics.h"
 
-
+void addTextToRenderer(char *font_path, int font_size, char *message_text, int x, int y, SDL_Color &color);
 void addImageToRenderer(const char *file, int x, int y, int w, int h);
 void renderMainMenu(SDL_Event event);
 void renderInstructionsMenu(int page);

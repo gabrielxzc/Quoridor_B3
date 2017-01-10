@@ -70,6 +70,12 @@ int playingAgainstPlayer()
 
 	chooseWhoStarts = false;
 
+	playerOneScore = 0;
+	playerTwoScore = 0;
+
+	addNumberToStrig(playerOneScore, playerOneScoreC);
+	addNumberToStrig(playerTwoScore, playerTwoScoreC);
+
 	while (isRunning)
 	{
 		renderPlayTable();
@@ -101,6 +107,8 @@ int playingAgainstPlayer()
 				if (p1Y == p2Y_Start)
 				{
 					Winner = 1;
+					playerOneScore++;
+					addNumberToStrig(playerOneScore, playerOneScoreC);
 					playAgain = runPlayerWinTable(Winner);
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
@@ -117,6 +125,8 @@ int playingAgainstPlayer()
 				if (p2Y == p1Y_Start)
 				{
 					Winner = 2;
+					playerTwoScore++;
+					addNumberToStrig(playerTwoScore, playerTwoScoreC);
 					playAgain = runPlayerWinTable(Winner);
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
@@ -161,6 +171,12 @@ int playingAgainstComputer()
 
 	chooseWhoStarts = false;
 
+	playerOneScore = 0;
+	playerTwoScore = 0;
+
+	addNumberToStrig(playerOneScore, playerOneScoreC);
+	addNumberToStrig(playerTwoScore, playerTwoScoreC);
+
 	while (isRunning)
 	{
 		renderPlayTable();
@@ -192,6 +208,8 @@ int playingAgainstComputer()
 				if (p1Y == p2Y_Start)
 				{
 					Winner = 1;
+					playerOneScore++;
+					addNumberToStrig(playerOneScore, playerOneScoreC);
 					playAgain = runPlayerWinTable(Winner);
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
@@ -208,6 +226,8 @@ int playingAgainstComputer()
 				if (p2Y == p1Y_Start)
 				{
 					Winner = 2;
+					playerTwoScore++;
+					addNumberToStrig(playerTwoScore, playerTwoScoreC);
 					playAgain = runPlayerWinTable(Winner);
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)

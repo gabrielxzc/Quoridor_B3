@@ -54,3 +54,6 @@ extern short matriceDrumMinim[17][17];
 extern short auxiliarMatrix[17][17];
 
 extern bool chooseWhoStarts;
+
+extern short playerOneScore, playerTwoScore;
+extern char playerOneScoreC[4], playerTwoScoreC[4];

@@ -9,3 +9,4 @@ void initializeGameMatrix();
 void initializeGameBoardSquaresCoordinates();
 void initializeWallMatrix();
 void initializeMatriceDrumMinim();
+void addNumberToStrig(short number, char string[]);

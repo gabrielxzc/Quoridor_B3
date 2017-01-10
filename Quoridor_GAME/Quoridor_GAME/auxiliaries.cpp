@@ -131,3 +131,38 @@ void initializeMatriceDrumMinim()
 	}
 
 }
+
+void addNumberToStrig(short number, char string[])
+{
+	char swapValue;
+
+	if (number == 0) 
+	{
+		string[0] = '0';
+		string[1] = '\0';
+	}
+	else {
+		short cifra;
+		short i = 0;
+
+		while (number != 0)
+		{
+			cifra = number % 10;
+			string[i] = cifra + '0';
+			i++;
+			number = number / 10;
+		}
+
+		short st = 0, dr = i - 1;
+		while (dr > st)
+		{
+			swapValue = string[st];
+			string[st] = string[dr];
+			string[dr] = swapValue;
+
+			dr--;
+			st++;
+		}
+		string[i] = '\0';
+	}
+}

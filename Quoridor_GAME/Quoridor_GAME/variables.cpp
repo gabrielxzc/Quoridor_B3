@@ -27,3 +27,6 @@ short matriceDrumMinim[17][17];
 short auxiliarMatrix[17][17];
 
 bool chooseWhoStarts;
+
+short playerOneScore, playerTwoScore;
+char playerOneScoreC[4], playerTwoScoreC[4];

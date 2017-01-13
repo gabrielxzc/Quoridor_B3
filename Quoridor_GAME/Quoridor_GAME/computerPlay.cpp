@@ -308,7 +308,7 @@ void computerPlaceWall()
 	}
 	else
 	{
-		updateMove(0, 0, 0, 0, line, column/2, true, false);
+		updateMove(500, 0, 0, 0, line, column/2, true, false);
 
 		wallMatrix[line][column / 2].placed = 1;
 

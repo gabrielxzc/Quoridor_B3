@@ -340,11 +340,16 @@ int playerOnePlay()
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 700 && event.motion.x < 770 && event.motion.y > 550 && event.motion.y < 590)
 				return 0;
 
-			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 10 && event.motion.x < 50 && event.motion.y > 20 && event.motion.y < 60 && moves >=2)
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x > 10 && event.motion.x < 50 && event.motion.y > 20 && event.motion.y < 60 && moves !=0)
 			{
-				undoMove();
-				undoMove();
-				return 1;
+				if (moves >= 2 && (stivaUndo[moves-1].j == 500 || stivaUndo[moves-1].x == 500))
+				{
+					undoMove();
+					undoMove();
+				}
+				else
+					if (stivaUndo[moves - 1].j != 500 && stivaUndo[moves - 1].x != 500)
+						undoMove();
 			}
 
 			if (event.type == SDL_QUIT)

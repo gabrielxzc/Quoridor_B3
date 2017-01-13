@@ -347,6 +347,8 @@ void renderPlayTable()
 	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerOneScoreC, 117, 552, grey);
 	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerTwoScoreC, 667, -10, grey);
 
+	addImageToRenderer("images/undo.png", 10, 20, 40, 40);
+
 	SDL_RenderPresent(mainRenderer);
 }
 

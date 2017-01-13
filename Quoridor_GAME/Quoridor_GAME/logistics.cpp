@@ -1,5 +1,95 @@
 #include "logistics.h"
 
+
+void updateMove(int playerX, int playerY, short playerLine, short playerColumn, int i, int j, bool wasWallPlaced, bool playerOneMoved)
+{
+	if (wasWallPlaced == true)
+		stivaUndo[moves].wasWallPlaced = true;
+	else
+		stivaUndo[moves].wasWallPlaced = false;
+
+	if (playerOneMoved == true)
+		stivaUndo[moves].playerOneMoved = true;
+	else
+		stivaUndo[moves].playerOneMoved = false;
+
+	stivaUndo[moves].x = playerX;
+	stivaUndo[moves].y = playerY;
+	stivaUndo[moves].playerLine = playerLine;
+	stivaUndo[moves].playerColumn = playerColumn;
+	stivaUndo[moves].i = i;
+	stivaUndo[moves].j = j;
+
+	moves++;
+}
+
+void undoMove()
+{
+	if (stivaUndo[moves - 1].playerOneMoved == true && stivaUndo[moves-1].wasWallPlaced == false)
+	{
+		playerOneTurn = true;
+		p1X = stivaUndo[moves - 1].x;
+		p1Y = stivaUndo[moves - 1].y;
+		gameMatrix[playerOne.line][playerOne.column] = 0;
+		playerOne.line = stivaUndo[moves - 1].playerLine;
+		playerOne.column = stivaUndo[moves - 1].playerColumn;
+		gameMatrix[playerOne.line][playerOne.column] = 1;
+	}
+
+	if (stivaUndo[moves - 1].playerOneMoved == false && stivaUndo[moves - 1].wasWallPlaced == false)
+	{
+		playerOneTurn = false;
+		p2X = stivaUndo[moves - 1].x;
+		p2Y = stivaUndo[moves - 1].y;
+		gameMatrix[playerTwo.line][playerTwo.column] = 0;
+		playerTwo.line = stivaUndo[moves - 1].playerLine;
+		playerTwo.column = stivaUndo[moves - 1].playerColumn;
+		gameMatrix[playerTwo.line][playerTwo.column] = 2;
+	}
+
+	if (stivaUndo[moves - 1].playerOneMoved == true && stivaUndo[moves - 1].wasWallPlaced == true)
+	{
+		playerOneTurn = true;
+		wallMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j].placed = 0;
+		if (stivaUndo[moves - 1].i % 2 == 0)
+		{
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i + 1][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i + 2][stivaUndo[moves - 1].j * 2 + 1] = 0;
+		}
+		else
+		{
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2] = 0;
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 2] = 0;
+		}
+
+		playerOneWalls++;
+	}
+
+	if (stivaUndo[moves - 1].playerOneMoved == false && stivaUndo[moves - 1].wasWallPlaced == true)
+	{
+		playerOneTurn = false;
+		wallMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j].placed = 0;
+		if (stivaUndo[moves - 1].i % 2 == 0)
+		{
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i + 1][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i + 2][stivaUndo[moves - 1].j * 2 + 1] = 0;
+		}
+		else
+		{
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2] = 0;
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 1] = 0;
+			gameMatrix[stivaUndo[moves - 1].i][stivaUndo[moves - 1].j * 2 + 2] = 0;
+		}
+
+		playerTwoWalls++;
+	}
+
+	moves--;
+}
+
 void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 {
 	for (int i = 0; i <= 15; i++)
@@ -12,9 +102,15 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
+						{
 							playerOneWalls--;
+							updateMove(0, 0, 0, 0, i, j, true, true);
+						}
 						else
+						{
 							playerTwoWalls--;
+							updateMove(0, 0, 0, 0, i, j, true, false);
+						}
 
 						gameMatrix[i][j * 2 + 1] = -1;
 						gameMatrix[i + 1][j * 2 + 1] = -1;
@@ -31,9 +127,15 @@ void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn)
 					if (event.type == SDL_MOUSEBUTTONDOWN && wallMatrix[i][j].placed == 0)
 					{
 						if (playerOneTurn)
+						{
 							playerOneWalls--;
+							updateMove(0, 0, 0, 0, i, j, true, true);
+						}
 						else
+						{
 							playerTwoWalls--;
+							updateMove(0, 0, 0, 0, i, j, true, false);
+						}
 
 						gameMatrix[i][j * 2] = -1;
 						gameMatrix[i][j * 2 + 1] = -1;

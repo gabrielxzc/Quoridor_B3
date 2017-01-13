@@ -65,6 +65,8 @@ int playingAgainstPlayer()
 	playerOneWalls = 10;
 	playerTwoWalls = 10;
 
+	moves = 0;
+
 	initializeWallMatrix();
 	initializeGameMatrix();
 
@@ -113,6 +115,7 @@ int playingAgainstPlayer()
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
 					{
+						moves = 0;
 						initializeWallMatrix();
 						initializeGameMatrix();
 						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
@@ -131,6 +134,7 @@ int playingAgainstPlayer()
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
 					{
+						moves = 0;
 						initializeWallMatrix();
 						initializeGameMatrix();
 						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
@@ -168,6 +172,8 @@ int playingAgainstComputer()
 
 	initializeWallMatrix();
 	initializeGameMatrix();
+
+	moves = 0;
 
 	chooseWhoStarts = false;
 
@@ -214,6 +220,7 @@ int playingAgainstComputer()
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
 					{
+						moves = 0;
 						initializeWallMatrix();
 						initializeGameMatrix();
 						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;
@@ -232,6 +239,7 @@ int playingAgainstComputer()
 					if (playAgain == 0) return 0;
 					if (playAgain == 1)
 					{
+						moves = 0;
 						initializeWallMatrix();
 						initializeGameMatrix();
 						p1X = p1X_Start, p1Y = p1Y_Start, p2X = p2X_Start, p2Y = p2Y_Start;

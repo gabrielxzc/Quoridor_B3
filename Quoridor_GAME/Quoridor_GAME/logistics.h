@@ -4,6 +4,10 @@
 #include "variables.h"
 #include "auxiliaries.h"
 
+void updateMove(int playerX, int playerY, short playerLine, short playerColumn, int i, int j, bool wasWallPlaced, bool playerOneMoved);
+
+void undoMove();
+
 void checkPlaceWall(SDL_Event event, bool &turnOver, short playerTurn);
 bool stillHasWalls(short playerTurn);
 bool noVerticalWallsAround(int line, int column);

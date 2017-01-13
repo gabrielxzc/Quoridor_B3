@@ -27,6 +27,21 @@ struct playerInMatrix{
 	int column;
 };
 
+struct undoInfo {
+	int x;
+	int y;
+	short playerLine;
+	short playerColumn;
+	int i;
+	int j;
+	bool wasWallPlaced;
+	bool playerOneMoved;
+};
+
+extern undoInfo stivaUndo[501];
+
+extern unsigned int moves;
+
 extern gameBoardSquare gameBoardSquareMatrix[9][9];
 
 extern wall wallMatrix[16][8];

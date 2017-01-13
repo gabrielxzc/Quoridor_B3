@@ -15,6 +15,9 @@ void computerMove()
 	short drumulScurt;
 
 	initializeMatriceDrumMinim();
+
+	updateMove(p2X, p2Y, playerTwo.line, playerTwo.column, 100, 500, false, false);
+
 	if (drumMinim(playerTwo, 2) == 1)
 	{
 		p2Y = p1Y_Start;
@@ -305,6 +308,8 @@ void computerPlaceWall()
 	}
 	else
 	{
+		updateMove(0, 0, 0, 0, line, column/2, true, false);
+
 		wallMatrix[line][column / 2].placed = 1;
 
 		if (line % 2 == 0)

@@ -348,6 +348,8 @@ void renderPlayTable()
 	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerOneScoreC, 117, 552, grey);
 	addTextToRenderer("fonts/yorkbailehill.ttf", 27, playerTwoScoreC, 667, -10, grey);
 
+	addImageToRenderer("images/tutorialButton.png", 700, 504, 70, 40);
+
 	addImageToRenderer("images/undo.png", 10, 20, 40, 40);
 
 	SDL_RenderPresent(mainRenderer);
@@ -360,4 +362,17 @@ void renderPlayerWinTable(int Winner)
 	if (Winner == 1) addImageToRenderer("images/PlayerOneWin.JPG", 0, 0, 800, 600);
 	if (Winner == 2) addImageToRenderer("images/PlayerTwoWin.JPG", 0, 0, 800, 600);
 
+}
+
+void renderTutorialMenu()
+{
+	SDL_RenderClear(mainRenderer);
+
+	short pos = strlen(settings) - 1;
+
+	addImageToRenderer("images/tutorial.png", 0, 0, 800, 600);
+	if (settings[pos] == '0')
+		addImageToRenderer("images/check.png", 451, 546, 39, 41);
+
+	SDL_RenderPresent(mainRenderer);
 }

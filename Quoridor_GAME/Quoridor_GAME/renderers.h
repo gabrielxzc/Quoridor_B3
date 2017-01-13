@@ -12,3 +12,4 @@ void highlightWalls(SDL_Event event, int &highlightedWalls, short playerTurn);
 void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighlighter);
 void renderPlayTable();
 void renderPlayerWinTable(int Winner);
+void renderTutorialMenu();

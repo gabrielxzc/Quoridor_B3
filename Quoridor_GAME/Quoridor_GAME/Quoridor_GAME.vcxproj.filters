@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{fc583e56-3e32-4470-a24c-6f154c91af6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -59,5 +62,131 @@
     <ClInclude Include="playerPlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="settings.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\yorkbailehill.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\backButton.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\chooseGreen.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\chooseRed.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\chooseWhoStartsButton.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\computercolor.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\computernoncolor.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\exitButton.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\exitButtonHIGHLIGHT.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\gameBoardPlayer1.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\gameBoardPlayer2.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\highlightedSquare.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\mainMenuBackground.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\pereteFilled.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\pereteNotDrum.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\pereteNotFilled.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\pereteVerticalFilled.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\pereteVerticalNotFilled.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerOne.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerOneWin.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerOneWinAgainHighlighted.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerOneWinMenuHighlighted.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerTwo.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerTwoWin.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerTwoWinAgainHighlighted.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\playerTwoWinMenuHighlighted.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesHIGHLIGHT.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rules.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesLeft.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesPage1.PNG">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesPage2.PNG">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesPage3.PNG">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\rulesPage4.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\RulesRight.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\startGame.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\startGameHIGHLIGHT.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\undo.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\vsPlayerColor.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="images\vsPlayerNonColor.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

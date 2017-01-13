@@ -3,6 +3,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <fstream>
+#include <iostream>
+#include <cstring>
 
 #define p1X_Start 382
 #define p1Y_Start 504

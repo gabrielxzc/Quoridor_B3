@@ -86,6 +86,52 @@
     <ClInclude Include="renderers.h" />
     <ClInclude Include="variables.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="settings.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\yorkbailehill.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\backButton.png" />
+    <Image Include="images\chooseGreen.png" />
+    <Image Include="images\chooseRed.png" />
+    <Image Include="images\chooseWhoStartsButton.png" />
+    <Image Include="images\computercolor.png" />
+    <Image Include="images\computernoncolor.png" />
+    <Image Include="images\exitButton.png" />
+    <Image Include="images\exitButtonHIGHLIGHT.png" />
+    <Image Include="images\gameBoardPlayer1.png" />
+    <Image Include="images\gameBoardPlayer2.png" />
+    <Image Include="images\highlightedSquare.png" />
+    <Image Include="images\mainMenuBackground.jpg" />
+    <Image Include="images\pereteFilled.png" />
+    <Image Include="images\pereteNotDrum.png" />
+    <Image Include="images\pereteNotFilled.png" />
+    <Image Include="images\pereteVerticalFilled.png" />
+    <Image Include="images\pereteVerticalNotFilled.png" />
+    <Image Include="images\playerOne.png" />
+    <Image Include="images\playerOneWin.jpg" />
+    <Image Include="images\playerOneWinAgainHighlighted.jpg" />
+    <Image Include="images\playerOneWinMenuHighlighted.jpg" />
+    <Image Include="images\playerTwo.png" />
+    <Image Include="images\playerTwoWin.jpg" />
+    <Image Include="images\playerTwoWinAgainHighlighted.jpg" />
+    <Image Include="images\playerTwoWinMenuHighlighted.jpg" />
+    <Image Include="images\rules.png" />
+    <Image Include="images\rulesHIGHLIGHT.png" />
+    <Image Include="images\rulesLeft.png" />
+    <Image Include="images\rulesPage1.PNG" />
+    <Image Include="images\rulesPage2.PNG" />
+    <Image Include="images\rulesPage3.PNG" />
+    <Image Include="images\rulesPage4.png" />
+    <Image Include="images\RulesRight.png" />
+    <Image Include="images\startGame.png" />
+    <Image Include="images\startGameHIGHLIGHT.png" />
+    <Image Include="images\undo.png" />
+    <Image Include="images\vsPlayerColor.png" />
+    <Image Include="images\vsPlayerNonColor.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

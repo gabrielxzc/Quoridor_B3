@@ -1,4 +1,3 @@
-#include <iostream>
 #include <stdlib.h>
 
 #include "defines.h"
@@ -53,6 +52,14 @@ int runPlayerWinTable(int Winner)
 	return 0;
 }
 
+bool tutorial()
+{
+	short pos = strlen(settings) - 1;
+	if (settings[pos] == '1')
+		return true;
+	else return false;
+}
+
 int playingAgainstPlayer()
 {
 	SDL_Event event;
@@ -77,6 +84,9 @@ int playingAgainstPlayer()
 
 	addNumberToStrig(playerOneScore, playerOneScoreC);
 	addNumberToStrig(playerTwoScore, playerTwoScoreC);
+
+	if (tutorial())
+		runTutorialMenu();
 
 	while (isRunning)
 	{
@@ -182,6 +192,9 @@ int playingAgainstComputer()
 
 	addNumberToStrig(playerOneScore, playerOneScoreC);
 	addNumberToStrig(playerTwoScore, playerTwoScoreC);
+
+	if (tutorial())
+		runTutorialMenu();
 
 	while (isRunning)
 	{
@@ -337,6 +350,8 @@ int runMainMenu()
 	return 0;
 }
 
+ifstream settingsIn;
+
 int main(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -349,6 +364,10 @@ int main(int argc, char* argv[])
 		800,
 		600,
 		0);
+
+	settingsIn.open("settings.txt");
+	settingsIn.getline(settings, 101);
+	settingsIn.close();
 
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
 

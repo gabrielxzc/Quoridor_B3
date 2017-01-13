@@ -11,6 +11,8 @@ int directionsLine[] = { 1, -1, 0, 0 }, directionsColumn[] = { 0, 0, 1, -1 }, mo
 SDL_Window *mainWindow = nullptr;
 SDL_Renderer *mainRenderer = nullptr;
 
+char settings[101];
+
 undoInfo stivaUndo[501];
 
 unsigned int moves = 0;

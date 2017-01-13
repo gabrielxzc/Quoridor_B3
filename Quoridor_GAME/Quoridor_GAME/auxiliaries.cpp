@@ -1,5 +1,7 @@
 #include "auxiliaries.h"
 
+using namespace std;
+
 void createAuxiliarForWalls()
 {
 	int k, t;
@@ -165,4 +167,50 @@ void addNumberToStrig(short number, char string[])
 		}
 		string[i] = '\0';
 	}
+}
+
+int runTutorialMenu()
+{
+	SDL_Event event;
+
+	ofstream settingsOut;
+
+	short pos = strlen(settings) - 1;
+
+	while (isRunning)
+	{
+		renderTutorialMenu();
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				isRunning = false;
+				return 0;
+			}
+
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 450 && event.motion.x <= 472 && event.motion.y >= 566 && event.motion.y <= 588)
+			{
+				if (settings[pos] == '1')
+				{
+					settings[pos] = '0';
+					settingsOut.open("settings.txt");
+					settingsOut << settings;
+					settingsOut.close();
+				}
+				else
+				{
+					settings[pos] = '1';
+					settingsOut.open("settings.txt");
+					settingsOut << settings;
+					settingsOut.close();
+				}
+			}
+			else 
+			{
+				if (event.type == SDL_MOUSEBUTTONDOWN)
+					return 1;
+			}
+		}
+	}
+	return 1;
 }

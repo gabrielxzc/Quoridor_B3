@@ -38,6 +38,9 @@ struct undoInfo {
 	bool playerOneMoved;
 };
 
+extern char settings[101];
+
+
 extern undoInfo stivaUndo[501];
 
 extern unsigned int moves;

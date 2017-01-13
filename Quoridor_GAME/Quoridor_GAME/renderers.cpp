@@ -132,9 +132,9 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 {
 	if (playerHighlighter == 1)
 	{
-		if (checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) && gameMatrix[player.line][player.column - 1] != -1)
+		if (checkPlayerProximity(X - moveLeftRight, Y, p2X, p2Y) == 0 && ( X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) || playerTwo.column == 0 ) && gameMatrix[player.line][player.column - 1] != -1)
 		{
-			if (gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
+			if (playerTwo.column-1 >= 0 && gameMatrix[playerTwo.line][playerTwo.column - 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
 			else
 			{
@@ -150,9 +150,9 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 			addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
 
 
-		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) && gameMatrix[player.line][player.column + 1] != -1)
+		if (checkPlayerProximity(X + moveLeftRight, Y, p2X, p2Y) == 0 && (X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) || playerTwo.column == 16 ) && gameMatrix[player.line][player.column + 1] != -1)
 		{
-			if (gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
+			if (playerTwo.column +1 <= 16 && gameMatrix[playerTwo.line][playerTwo.column + 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
 			else
 			{
@@ -211,9 +211,9 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 
 	if (playerHighlighter == 2)
 	{
-		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) && gameMatrix[player.line][player.column - 1] != -1)
+		if (checkPlayerProximity(X - moveLeftRight, Y, p1X, p1Y) == 0 && (X - 2 * moveLeftRight >= p1X_Start - (4 * moveLeftRight) || playerOne.column == 0) && gameMatrix[player.line][player.column - 1] != -1)
 		{
-			if (gameMatrix[playerOne.line][playerOne.column - 1] != -1)
+			if (playerOne.column-1 >= 0 && gameMatrix[playerOne.line][playerOne.column - 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X - 2 * moveLeftRight, Y, 35, 35);
 			else
 			{
@@ -229,9 +229,9 @@ void highlightPossibleMoves(int X, int Y, playerInMatrix player, int playerHighl
 			addImageToRenderer("images/highlightedSquare.PNG", X - moveLeftRight, Y, 35, 35);
 
 
-		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) && gameMatrix[player.line][player.column + 1] != -1)
+		if (checkPlayerProximity(X + moveLeftRight, Y, p1X, p1Y) == 0 && (X + 2 * moveLeftRight <= p1X_Start + (4 * moveLeftRight) || playerOne.column == 16) && gameMatrix[player.line][player.column + 1] != -1)
 		{
-			if (gameMatrix[playerOne.line][playerOne.column + 1] != -1)
+			if (playerOne.column + 1 <= 16 && gameMatrix[playerOne.line][playerOne.column + 1] != -1)
 				addImageToRenderer("images/highlightedSquare.PNG", X + 2 * moveLeftRight, Y, 35, 35);
 			else
 			{

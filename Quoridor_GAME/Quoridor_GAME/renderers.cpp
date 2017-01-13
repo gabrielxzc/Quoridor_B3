@@ -64,13 +64,14 @@ void renderInstructionsMenu(int page)
 {
 	SDL_RenderClear(mainRenderer);
 	addImageToRenderer("images/mainMenuBackground.JPG", 0, 0, 800, 600);
-	if (page == 1) addImageToRenderer("images/rulesPage1.PNG", 100, 130, 600, 400);
-	if (page == 2) addImageToRenderer("images/rulesPage2.PNG", 100, 130, 600, 400);
-	if (page == 3) addImageToRenderer("images/rulesPage3.PNG", 100, 130, 600, 400);
+	if (page == 1) addImageToRenderer("images/rulesPage1.PNG", 20, 130, 800, 408);
+	if (page == 2) addImageToRenderer("images/rulesPage2.PNG", 20, 130, 800, 408);
+	if (page == 3) addImageToRenderer("images/rulesPage3.PNG", 20, 130, 800, 408);
+	if (page == 4) addImageToRenderer("images/rulesPage4.PNG", 20, 130, 800, 408);
 
 
 	if (page != 1)addImageToRenderer("images/RulesLeft.PNG", 0, 250, 100, 100);
-	if (page != 3)addImageToRenderer("images/RulesRight.PNG", 700, 250, 100, 100);
+	if (page != 4)addImageToRenderer("images/RulesRight.PNG", 700, 250, 100, 100);
 	addImageToRenderer("images/backButton.PNG", 365, 550, 70, 40);
 
 	SDL_RenderPresent(mainRenderer);

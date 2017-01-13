@@ -308,7 +308,7 @@ int runInstructionsMenu()
 			if (event.type == SDL_MOUSEBUTTONDOWN && (event.motion.x > 365 && event.motion.x < 435 && event.motion.y > 550 && event.motion.y < 590))
 				return 0;
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 0 && event.motion.y >= 250 && event.motion.x <= 100 && event.motion.y <= 350 && page!=1) page--;
-			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 700 && event.motion.y >= 250 && event.motion.x <= 800 && event.motion.y <= 350 && page!=3) page++;
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.motion.x >= 700 && event.motion.y >= 250 && event.motion.x <= 800 && event.motion.y <= 350 && page!=4) page++;
 			if (event.type == SDL_QUIT)
 			{
 				isRunning = false;

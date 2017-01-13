@@ -346,10 +346,14 @@ int playerOnePlay()
 				{
 					undoMove();
 					undoMove();
+					return 1;
 				}
 				else
 					if (stivaUndo[moves - 1].j != 500 && stivaUndo[moves - 1].x != 500)
+					{
 						undoMove();
+						return 1;
+					}
 			}
 
 			if (event.type == SDL_QUIT)
@@ -359,6 +363,7 @@ int playerOnePlay()
 			}
 		}
 	}
+
 	playerOneTurn = false;
 }
 
